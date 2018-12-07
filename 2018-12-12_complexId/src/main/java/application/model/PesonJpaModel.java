@@ -29,4 +29,11 @@ public class PesonJpaModel implements IPersonJpaModel {
 		
 	}
 
+	@Override
+	public void put(Person person) {
+		
+		repo.save(person);
+		
+	}
+
 }

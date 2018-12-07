@@ -10,5 +10,7 @@ public interface IPersonJpaModel {
 	public List<Person> findAll();
 	
 	public Person findPersonById(PesonCompositeID personId);
+
+	public void put(Person person);
 	
 }

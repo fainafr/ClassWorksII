@@ -8,4 +8,6 @@ public interface IPersonsJpaController {
 	
 	public List<Person> findAll();
 	
+	public Person findById(String name, String surname);
+	
 }

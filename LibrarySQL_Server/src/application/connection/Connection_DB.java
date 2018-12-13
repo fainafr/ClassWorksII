@@ -11,7 +11,7 @@ public class Connection_DB {
 		private static final String URL = "jdbc:mysql://localhost:3306";
 		private static final String DB = "library_j2h";
 		private static final String USER = "root";
-		private static final String PASSWORD = "12345.com";
+		private static final String PASSWORD = "aelita";
 		private static final boolean SSL = false;
 		
 	// -------------------------------------

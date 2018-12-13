@@ -22,12 +22,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "isbn")
 @AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
-@Table(name="book")
+@Table(name="books")
 public class Book implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -35,19 +35,19 @@ public class Book implements Serializable{
 	@Id
 	long isbn;
 	
-	String name;
-	
-	Double price;
-	
-	LocalDate edition;
-	
 	@ManyToMany()
 	@JoinTable(name = "book_author", 
 		joinColumns = {@JoinColumn(name = "isbn")}, 
 		inverseJoinColumns = {@JoinColumn(name="firstName"), @JoinColumn(name="lastName")})
 	Set<Author> authors = new HashSet<Author>();
 	
+	String title;
+		
 	@ManyToOne(fetch = FetchType.LAZY)
 	Publisher publisher;
 	
+	LocalDate edition;
+
+	Double price;
+
 }

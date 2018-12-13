@@ -17,25 +17,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter 
+@Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor 
+@AllArgsConstructor
 
 @Entity
-@Table(name="publishers")
-public class Publisher implements Serializable{
+@Table(name = "publishers")
+public class Publisher implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	String publisherName;
-	
+
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	String countryName;
-	
-	@OneToMany(mappedBy="publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	Country countryName;
+
+	@OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	Set<Book> books;
-	
+
+	public Publisher(String name) {
+		this.publisherName = name;
+
+	}
+
+	public Publisher(String name, Country countryName) {
+		this.publisherName = name;
+		this.countryName = countryName;
+
+	}
 }

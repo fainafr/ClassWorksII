@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorID implements Serializable {
+public class AuthorId implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	

@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -23,7 +22,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(AuthorID.class)
 @Entity
 @Table(name = "authors")
 public class Author implements Serializable {
@@ -31,14 +29,12 @@ public class Author implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	AuthorID id;
-	
-	String name;
+	AuthorId id;
 	
 	@ManyToMany(mappedBy="authors", fetch = FetchType.LAZY)
 	Set<Book> books = new HashSet<Book>();
 	
-	public Author(AuthorID id) {
+	public Author(AuthorId id) {
 		this.id = id;
 	}
 	

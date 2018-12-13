@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>2018-09-26 Single</name>
+	<name>2018-12-12_complexId</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -11,18 +11,10 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.springframework.ide.eclipse.boot.validation.springbootbuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-<<<<<<< HEAD
-=======
-		<buildCommand>
 			<name>org.eclipse.m2e.core.maven2Builder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
->>>>>>> 1788562d15be6ae0be7328aa0a22d90cf18b46ab
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>

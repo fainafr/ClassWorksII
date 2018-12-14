@@ -47,7 +47,7 @@ public class LibraryServiceTest {
     private ILibraryService model;
 
 
-    @BeforeEach
+    @Before //BeforeEach sometimes does not work
     public void setUp() {
         authors = new HashSet <>();
         author1 = new Author(new AuthorId("TestAuthor1","Testovich1"));

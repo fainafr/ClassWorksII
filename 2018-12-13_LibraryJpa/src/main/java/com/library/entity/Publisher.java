@@ -16,15 +16,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-
-//@Entity
-//@Table(name = "publishers")
+@EqualsAndHashCode
+@ToString
+@Entity
+@Table(name = "publishers")
 public class Publisher implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,10 +33,12 @@ public class Publisher implements Serializable {
 	@Id
 	String publisherName;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	Country countryName;
-
-	@OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude 
+	@OneToMany(mappedBy = "publisher", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	Set<Book> books;
 
 	public Publisher(String name) {
@@ -48,4 +51,5 @@ public class Publisher implements Serializable {
 		this.countryName = countryName;
 
 	}
+
 }

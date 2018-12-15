@@ -2,29 +2,29 @@ package com.library.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.library.util.date.LocalDateConverter;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 
 @Entity
 @Table(name="books")
@@ -43,9 +43,11 @@ public class Book implements Serializable{
 //	
 	String title;
 //		
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	Publisher publisher;
+	@ManyToOne(fetch = FetchType.EAGER)
+	Publisher publisher;
 	
+
+	@Convert(converter = LocalDateConverter.class)
 	LocalDate edition;
 
 	Double price;

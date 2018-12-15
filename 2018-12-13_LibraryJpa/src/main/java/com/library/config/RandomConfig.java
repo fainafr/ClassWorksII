@@ -68,8 +68,12 @@ public class RandomConfig {
         return ThreadLocalRandom.current().nextDouble(50.50, 800.00);
     }
 
+//    public static Book randomBook() {
+//        return new Book(randomIsbn(), randomTitle(),  randomDate(1900), randomPrice());
+//    }
+    
     public static Book randomBook() {
-        return new Book(randomIsbn(), randomTitle(),  randomDate(1900), randomPrice());
+        return new Book(randomIsbn(), randomTitle(), randomPublisher(),  randomDate(1900), randomPrice());
     }
     
 //    public static Book randomBook() {

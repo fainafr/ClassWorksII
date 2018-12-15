@@ -10,5 +10,5 @@ public class LibraryJpaApplication {
 		SpringApplication.run(LibraryJpaApplication.class, args);
 	}
 
+	
 }
-

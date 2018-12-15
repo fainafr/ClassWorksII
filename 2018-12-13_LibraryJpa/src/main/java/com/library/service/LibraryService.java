@@ -139,4 +139,9 @@ public class LibraryService implements ILibraryService {
 		return null;
 	}
 
+	@Override
+	public void clear() {
+		bookRepo.deleteAll();
+	}
+
 }

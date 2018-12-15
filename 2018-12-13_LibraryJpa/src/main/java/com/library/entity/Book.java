@@ -22,7 +22,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "isbn")
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 

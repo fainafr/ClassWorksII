@@ -86,6 +86,8 @@ public class LibraryServiceTest {
         books.add(book2);
         books.add(book3);
         books.add(book4);
+        
+        model.clear();
     }
 
     @AfterEach
@@ -113,11 +115,13 @@ public class LibraryServiceTest {
 
     @Test
     public void update() {
+    	
         assertTrue(model.add(book1));
         Book testBook = new Book(book1.getIsbn(),book1.getTitle(),
                 LocalDate.now(), 100.);
      //   Book testBook = new Book(book1.getIsbn(),book1.getAuthors(),book1.getTitle(),book1.getPublisher(), LocalDate.now(), 100.);
         assertNotEquals(book1, model.update(testBook));
+        
     }
 
     @Test

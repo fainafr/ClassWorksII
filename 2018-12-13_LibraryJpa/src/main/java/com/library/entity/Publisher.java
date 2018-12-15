@@ -23,8 +23,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity
-@Table(name = "publishers")
+//@Entity
+//@Table(name = "publishers")
 public class Publisher implements Serializable {
 
 	private static final long serialVersionUID = 1L;

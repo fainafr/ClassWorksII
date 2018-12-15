@@ -56,18 +56,30 @@ public class LibraryServiceTest {
         authors.add(author2);
         country = new Country("TestCountry");
         publisher = new Publisher("TestPublisher",country);
+        
+      book1 = new Book(1l,"TestTitle1",
+              LocalDate.of(1900,1,31),10.);
 
-        book1 = new Book(1l,authors,"TestTitle1",publisher,
-                LocalDate.of(1900,1,31),10.);
+      book2 = new Book(2l,"TestTitle2",
+              LocalDate.of(1900,2,11),20.);
 
-        book2 = new Book(2l,authors,"TestTitle2",publisher,
-                LocalDate.of(1900,2,11),20.);
+      book3 = new Book(3l,"TestTitle3",
+              LocalDate.of(1900,3,15),30.);
 
-        book3 = new Book(3l,authors,"TestTitle3",publisher,
-                LocalDate.of(1900,3,15),30.);
-
-        book4 = new Book(4l,authors,"TestTitle4",publisher,
-                LocalDate.of(1900,12,31),40.);
+      book4 = new Book(4l,"TestTitle4",
+              LocalDate.of(1900,12,31),40.);
+      
+//        book1 = new Book(1l,authors,"TestTitle1",publisher,
+//                LocalDate.of(1900,1,31),10.);
+//
+//        book2 = new Book(2l,authors,"TestTitle2",publisher,
+//                LocalDate.of(1900,2,11),20.);
+//
+//        book3 = new Book(3l,authors,"TestTitle3",publisher,
+//                LocalDate.of(1900,3,15),30.);
+//
+//        book4 = new Book(4l,authors,"TestTitle4",publisher,
+//                LocalDate.of(1900,12,31),40.);
 
         books = new ArrayList <>();
         books.add(book1);
@@ -102,8 +114,9 @@ public class LibraryServiceTest {
     @Test
     public void update() {
         assertTrue(model.add(book1));
-        Book testBook = new Book(book1.getIsbn(),book1.getAuthors(),book1.getTitle(),book1.getPublisher(),
+        Book testBook = new Book(book1.getIsbn(),book1.getTitle(),
                 LocalDate.now(), 100.);
+     //   Book testBook = new Book(book1.getIsbn(),book1.getAuthors(),book1.getTitle(),book1.getPublisher(), LocalDate.now(), 100.);
         assertNotEquals(book1, model.update(testBook));
     }
 

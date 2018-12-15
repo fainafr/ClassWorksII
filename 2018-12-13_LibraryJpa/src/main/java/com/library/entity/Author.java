@@ -22,8 +22,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "authors")
+//@Entity
+//@Table(name = "authors")
 public class Author implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

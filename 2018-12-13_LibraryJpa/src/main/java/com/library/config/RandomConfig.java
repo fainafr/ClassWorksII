@@ -69,6 +69,12 @@ public class RandomConfig {
     }
 
     public static Book randomBook() {
-        return new Book(randomIsbn(), randomAuthor(), randomTitle(), randomPublisher(), randomDate(1900), randomPrice());
+        return new Book(randomIsbn(), randomTitle(),  randomDate(1900), randomPrice());
     }
+    
+//    public static Book randomBook() {
+//        return new Book(randomIsbn(), randomAuthor(), randomTitle(), randomPublisher(), randomDate(1900), randomPrice());
+//    }
+//    
+    
 }

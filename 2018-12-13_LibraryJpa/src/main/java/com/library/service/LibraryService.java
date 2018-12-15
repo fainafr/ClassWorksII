@@ -13,10 +13,7 @@ import com.library.config.RandomConfig;
 import com.library.entity.Author;
 import com.library.entity.Book;
 import com.library.entity.Publisher;
-import com.library.repo.IAuthorRepo;
 import com.library.repo.IBookRepo;
-import com.library.repo.ICountryRepo;
-import com.library.repo.IPublisherRepo;
 
 //@Transactional do we have to have it on class level?
 @Service
@@ -24,12 +21,12 @@ public class LibraryService implements ILibraryService {
 
 	@Autowired
 	IBookRepo bookRepo;
-	@Autowired
-	IAuthorRepo authorRepo;
-	@Autowired
-	ICountryRepo countryRepo;
-	@Autowired
-	IPublisherRepo publisherRepo;
+//	@Autowired
+//	IAuthorRepo authorRepo;
+//	@Autowired
+//	ICountryRepo countryRepo;
+//	@Autowired
+//	IPublisherRepo publisherRepo;
 	
 	@Override
 	public Book getBook(long isbn) {
@@ -44,8 +41,8 @@ public class LibraryService implements ILibraryService {
 	public boolean add(Book book) {
 
 		if (bookRepo.existsById(book.getIsbn())) return false;
-		publisherRepo.save(book.getPublisher());
-		countryRepo.save(book.getPublisher().getCountryName());
+	//	publisherRepo.save(book.getPublisher());
+	//	countryRepo.save(book.getPublisher().getCountryName());
 		bookRepo.save(book);
 		return true;
 	
@@ -70,8 +67,8 @@ public class LibraryService implements ILibraryService {
 			add(book);
 			return book;
 		}
-		publisherRepo.save(book.getPublisher());
-		countryRepo.save(book.getPublisher().getCountryName());
+	//	publisherRepo.save(book.getPublisher());
+	//	countryRepo.save(book.getPublisher().getCountryName());
 		return bookRepo.save(book); 
 	
 	}

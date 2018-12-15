@@ -18,8 +18,8 @@ import lombok.Setter;
 @NoArgsConstructor 
 @AllArgsConstructor
 
-@Entity
-@Table(name = "countries")
+//@Entity
+//@Table(name = "countries")
 public class Country implements Serializable{
 
 	private static final long serialVersionUID = 1L;

@@ -34,17 +34,17 @@ public class Book implements Serializable{
 	
 	@Id
 	long isbn;
-	
-	@ManyToMany()
-	@JoinTable(name = "book_author", 
-		joinColumns = {@JoinColumn(name = "isbn")}, 
-		inverseJoinColumns = {@JoinColumn(name="firstName"), @JoinColumn(name="lastName")})
-	Set<Author> authors = new HashSet<Author>();
-	
+//	
+//	@ManyToMany()
+//	@JoinTable(name = "book_author", 
+//		joinColumns = {@JoinColumn(name = "isbn")}, 
+//		inverseJoinColumns = {@JoinColumn(name="firstName"), @JoinColumn(name="lastName")})
+//	Set<Author> authors = new HashSet<Author>();
+//	
 	String title;
-		
-	@ManyToOne(fetch = FetchType.LAZY)
-	Publisher publisher;
+//		
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	Publisher publisher;
 	
 	LocalDate edition;
 

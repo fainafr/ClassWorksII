@@ -33,12 +33,12 @@ public class Publisher implements Serializable {
 	@Id
 	String publisherName;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	Country countryName;
 	
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude 
-	@OneToMany(mappedBy = "publisher", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "publisher", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	Set<Book> books;
 
 	public Publisher(String name) {
@@ -51,5 +51,7 @@ public class Publisher implements Serializable {
 		this.countryName = countryName;
 
 	}
+
+	
 
 }

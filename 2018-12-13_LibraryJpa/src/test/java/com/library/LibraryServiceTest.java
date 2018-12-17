@@ -120,7 +120,8 @@ public class LibraryServiceTest {
 
 	@Test
 	public void getBook() {
-
+		model.add(book1);
+		assertEquals(model.getBook(book1.getIsbn()), book1);
 	}
 
 	@Test
@@ -139,9 +140,7 @@ public class LibraryServiceTest {
 	@Test
 	public void delete() {
 		assertTrue(model.add(book1));
-		System.out.println("Added  " + book1.toString());
 		Book deletedBook = model.delete(book1.getIsbn());
-		System.out.println("Deleted" + deletedBook.toString());
 		assertEquals(book1, deletedBook);
 	}
 
@@ -152,7 +151,6 @@ public class LibraryServiceTest {
 		Book testBook = new Book(book1.getIsbn(), book1.getTitle(), publisher1Country1, LocalDate.now(), 100.);
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
-		// assertEquals(book1, model.update(book1));
 
 	}
 
@@ -164,7 +162,6 @@ public class LibraryServiceTest {
 				book1.getPrice());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
-		// assertEquals(book1, model.update(book1));
 
 	}
 
@@ -176,7 +173,6 @@ public class LibraryServiceTest {
 				book1.getPrice());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
-		// assertEquals(book1, model.update(book1));
 
 	}
 
@@ -188,7 +184,6 @@ public class LibraryServiceTest {
 				book1.getPrice());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
-		// assertEquals(book1, model.update(book1));
 
 	}
 

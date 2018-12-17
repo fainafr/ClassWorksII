@@ -43,7 +43,9 @@ public class Book implements Serializable{
 //	
 	String title;
 //		
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@ManyToOne(fetch = FetchType.LAZY)
 	Publisher publisher;
 	
 

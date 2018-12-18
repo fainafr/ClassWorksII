@@ -38,7 +38,8 @@ public class Publisher implements Serializable {
 	
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude 
-	@OneToMany(mappedBy = "publisher", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@OneToMany
+	(mappedBy = "publisher", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	Set<Book> books;
 
 	public Publisher(String name) {

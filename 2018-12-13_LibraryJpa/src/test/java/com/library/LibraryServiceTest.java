@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,7 +56,7 @@ public class LibraryServiceTest {
 	@Autowired
 	private ILibraryService model;
 
-	@Before // BeforeEach sometimes does not work
+	@Before
 	public void setUp() {
 		authors = new HashSet<>();
 		author1 = new Author(new AuthorId("TestAuthor1", "Testovich1"));
@@ -113,7 +113,7 @@ public class LibraryServiceTest {
 		model.clearBooks();
 	}
 
-	@AfterEach
+	@After
 	public void tearDown() {
 		model.clearBooks();
 	}

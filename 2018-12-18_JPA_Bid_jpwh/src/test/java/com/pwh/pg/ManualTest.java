@@ -3,6 +3,7 @@ package com.pwh.pg;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,7 @@ import com.pwh.pg.repo.IUserRepo;
 @SpringBootTest
 public class ManualTest {
 
-	static final Item strat = new Item(1l, "Stratocaster 1959 mahogany");
+	static final Item strat = new Item(1l, "Stratocaster 1959 mahogany", new HashSet<Bid>());
 	static final User jimmy = new User(1l, "Jimmy Hendrix");
 	static final Bid firstBid = new Bid(1l, BigDecimal.valueOf(900l), LocalDateTime.now().plus(10, ChronoUnit.DAYS),
 			strat, jimmy);
@@ -57,12 +58,10 @@ public class ManualTest {
 	
 	@Test 
 	public void readTest() {
+				
+		System.out.println("Item 1" + itemRepo.findById(1l));
 		
-		Item item = itemRepo.findById(1l).get();
-		
-		System.out.println("Item 1" + item + bidRepo.findBidsByItem(item));
-
-		System.out.println("Item 1" + item + bidRepo.findBidsByItem(item));
+		System.out.println("Item 1" + itemRepo.findById(1l));
 
 		System.out.println("User 1" + userRepo.findById(1l));
 

@@ -35,7 +35,7 @@ public class Bid {
 	LocalDateTime time;
 
 	@ToString.Exclude
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	Item item;
 
 	@ManyToOne

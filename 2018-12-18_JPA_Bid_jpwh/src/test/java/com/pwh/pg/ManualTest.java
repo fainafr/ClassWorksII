@@ -16,6 +16,7 @@ import com.pwh.pg.entity.Item;
 import com.pwh.pg.entity.User;
 import com.pwh.pg.repo.IBidRepo;
 import com.pwh.pg.repo.IItemRepo;
+import com.pwh.pg.repo.IItemRepoCustomImpl;
 import com.pwh.pg.repo.IUserRepo;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +32,9 @@ public class ManualTest {
 
 	@Autowired
 	IItemRepo itemRepo;
+	
+	@Autowired
+	private IItemRepoCustomImpl itemRepoCustom;
 
 	@Autowired
 	IUserRepo userRepo;
@@ -58,6 +62,8 @@ public class ManualTest {
 	
 	@Test 
 	public void readTest() {
+		
+		itemRepoCustom.printEM();
 				
 		System.out.println("Item 1" + itemRepo.findById(1l));
 		

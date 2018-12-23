@@ -21,7 +21,9 @@ public class IItemRepoCustomImpl implements IItemRepoCustom {
 	}
 
 	public void printEM() {
-		System.out.println(em.toString());
+		
+		System.out.println("Entity Manager toString "+ em.toString());
+		System.out.println("Entity Manager class " + em.getClass());
 		
 	}
 

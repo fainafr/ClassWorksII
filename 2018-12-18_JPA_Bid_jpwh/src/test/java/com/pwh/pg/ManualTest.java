@@ -1,14 +1,23 @@
 package com.pwh.pg;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.pwh.pg.entity.Bid;
@@ -32,7 +41,7 @@ public class ManualTest {
 
 	@Autowired
 	IItemRepo itemRepo;
-	
+
 	@Autowired
 	private IItemRepoCustomImpl itemRepoCustom;
 
@@ -42,7 +51,57 @@ public class ManualTest {
 	@Autowired
 	IBidRepo bidRepo;
 
+	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
+	private EntityManager em;
+
+	@Before
+	@Transactional
+	public void addEric() {
+
+		final User eric = new User(2l, "Eric Clapton");
+		em.persist(eric);
+		
+	}
+
+	// jpwh 10.2.3
 	@Test
+	@Transactional //https://www.marcobehler.com/2014/06/25/should-my-tests-be-transactional/
+	public void emPersistFind() {
+
+		User persistentEric = em.find(User.class, 2l);
+
+		User persistentGod = em.find(User.class, 2l);
+
+		assertTrue(persistentGod == persistentEric);
+		assertTrue(persistentGod.equals(persistentEric));
+		assertTrue(persistentGod.getId().equals(persistentEric.getId()));
+	}
+
+	/*
+	 * Need to study @Commit more
+	 */
+	// jpwh 10.2.5; no assertNull(entity); entities in this project have manual ID
+	@Test
+	@Transactional //https://www.marcobehler.com/2014/06/25/should-my-tests-be-transactional/
+	@Commit // https://stackoverflow.com/a/19334129
+	public void emPersistToTransient() {
+
+		User persistentEric = em.find(User.class, 2l);
+		
+		assertTrue(em.contains(persistentEric));
+
+		em.remove(persistentEric);
+		
+		em.flush();
+
+		assertFalse(em.contains(persistentEric));
+
+		em.close();
+
+	}
+
+	@Test
+	@Transactional //https://www.marcobehler.com/2014/06/25/should-my-tests-be-transactional/
 	public void saveTest() {
 
 		itemRepo.save(strat);
@@ -56,17 +115,24 @@ public class ManualTest {
 		userRepo.save(jimmy);
 
 		userRepo.save(jimmy);
-
+		
+		/*
+		 * Eric was added in @Before
+		 */
+		User persistentGod = em.find(User.class, 2l);
+		
+		assertTrue(em.contains(persistentGod));
 
 	}
-	
-	@Test 
+
+	@Test
+	@Transactional //https://www.marcobehler.com/2014/06/25/should-my-tests-be-transactional/
 	public void readTest() {
-		
+
 		itemRepoCustom.printEM();
-				
+
 		System.out.println("Item 1" + itemRepo.findById(1l));
-		
+
 		System.out.println("Item 1" + itemRepo.findById(1l));
 
 		System.out.println("User 1" + userRepo.findById(1l));
@@ -74,6 +140,6 @@ public class ManualTest {
 		System.out.println("Bid 1" + bidRepo.findById(1l));
 
 		System.out.println("Bid 2" + bidRepo.findById(2l));
-		
+
 	}
 }

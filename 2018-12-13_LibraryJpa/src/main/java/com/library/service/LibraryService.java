@@ -13,6 +13,7 @@ import com.library.config.RandomConfig;
 import com.library.entity.Author;
 import com.library.entity.Book;
 import com.library.entity.Publisher;
+import com.library.repo.IAuthorRepo;
 import com.library.repo.IBookRepo;
 import com.library.repo.ICountryRepo;
 import com.library.repo.IPublisherRepo;
@@ -23,8 +24,8 @@ public class LibraryService implements ILibraryService {
 
 	@Autowired
 	IBookRepo bookRepo;
-//	@Autowired
-//	IAuthorRepo authorRepo;
+	@Autowired
+	IAuthorRepo authorRepo;
 	@Autowired
 	ICountryRepo countryRepo;
 	@Autowired
@@ -44,6 +45,7 @@ public class LibraryService implements ILibraryService {
 	public boolean add(Book book) {
 
 		if (bookRepo.existsById(book.getIsbn())) return false;
+		authorRepo.saveAll(book.getAuthors());
 		publisherRepo.save(book.getPublisher());
 		countryRepo.save(book.getPublisher().getCountryName());
 		bookRepo.save(book);
@@ -147,11 +149,13 @@ public class LibraryService implements ILibraryService {
 	}
 
 	@Override
-	public void clearBooks() {
+	public void clearAll() {
 		
 		bookRepo.deleteAll();
-		//publisherRepo.deleteAll();
-	//	countryRepo.deleteAll();
+		authorRepo.deleteAll();
+		publisherRepo.deleteAll();
+		//countryRepo.deleteAll();
+		
 		
 	}
 

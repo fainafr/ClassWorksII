@@ -71,38 +71,18 @@ public class LibraryServiceTest {
 		publisher1Country2 = new Publisher("TestPublisher", country2);
 		publisher2Country2 = new Publisher("AnotherPublisher", country2);
 
-//        
-//      book1 = new Book(1l,"TestTitle1", 
-//              LocalDate.of(1900,1,31),10.);
-//
-//      book2 = new Book(2l,"TestTitle2",
-//              LocalDate.of(1900,2,11),20.);
-//
-//      book3 = new Book(3l,"TestTitle3",
-//              LocalDate.of(1900,3,15),30.);
-//
-//      book4 = new Book(4l,"TestTitle4",
-//              LocalDate.of(1900,12,31),40.);
 
-		book1 = new Book(1l, "TestTitle1", publisher1Country1, LocalDate.of(1900, 1, 1), 10.);
+        book1 = new Book(1l,authors,"TestTitle1",publisher1Country1,
+                LocalDate.of(1900,1,31),10.);
 
-		book2 = new Book(2l, "TestTitle2", publisher1Country1, LocalDate.of(1900, 2, 11), 20.);
+        book2 = new Book(2l,authors,"TestTitle2",publisher1Country1,
+                LocalDate.of(1900,2,11),20.);
 
-		book3 = new Book(3l, "TestTitle3", publisher1Country1, LocalDate.of(1900, 3, 15), 30.);
+        book3 = new Book(3l,authors,"TestTitle3",publisher1Country1,
+                LocalDate.of(1900,3,15),30.);
 
-		book4 = new Book(4l, "TestTitle4", publisher1Country1, LocalDate.of(1900, 12, 31), 40.);
-
-//        book1 = new Book(1l,authors,"TestTitle1",publisher,
-//                LocalDate.of(1900,1,31),10.);
-//
-//        book2 = new Book(2l,authors,"TestTitle2",publisher,
-//                LocalDate.of(1900,2,11),20.);
-//
-//        book3 = new Book(3l,authors,"TestTitle3",publisher,
-//                LocalDate.of(1900,3,15),30.);
-//
-//        book4 = new Book(4l,authors,"TestTitle4",publisher,
-//                LocalDate.of(1900,12,31),40.);
+        book4 = new Book(4l,authors,"TestTitle4",publisher1Country1,
+                LocalDate.of(1900,12,31),40.);
 
 		books = new ArrayList<>();
 		books.add(book1);
@@ -110,12 +90,12 @@ public class LibraryServiceTest {
 		books.add(book3);
 		books.add(book4);
 
-		model.clearBooks();
+		model.clearAll();
 	}
 
 	@After
 	public void tearDown() {
-		model.clearBooks();
+		model.clearAll();
 	}
 
 	@Test
@@ -129,11 +109,18 @@ public class LibraryServiceTest {
 		assertTrue(model.add(book1));
 		assertFalse(model.add(book1));
 	}
+	
+	
+	@Test
+	public void removePublisher() {
+		assertTrue(model.add(book1));
+		assertFalse(model.add(book1));
+	}
 
 	@Test
 	public void clear() {
 		model.add(book1);
-		model.clearBooks();
+		model.clearAll();
 		assertTrue(model.add(book1));
 	}
 	
@@ -148,7 +135,7 @@ public class LibraryServiceTest {
 	public void update() {
 
 		assertTrue(model.add(book1));
-		Book testBook = new Book(book1.getIsbn(), book1.getTitle(), publisher1Country1, LocalDate.now(), 100.);
+		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher1Country1, LocalDate.now(), 100.);
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
 
@@ -158,7 +145,7 @@ public class LibraryServiceTest {
 	public void updatePublisher() {
 
 		assertTrue(model.add(book1));
-		Book testBook = new Book(book1.getIsbn(), book1.getTitle(), publisher2Country1, LocalDate.now(),
+		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher2Country1, LocalDate.now(),
 				book1.getPrice());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
@@ -169,7 +156,7 @@ public class LibraryServiceTest {
 	public void updateCountry() {
 
 		assertTrue(model.add(book1));
-		Book testBook = new Book(book1.getIsbn(), book1.getTitle(), publisher1Country2, LocalDate.now(),
+		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher1Country2, LocalDate.now(),
 				book1.getPrice());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
@@ -180,7 +167,7 @@ public class LibraryServiceTest {
 	public void updatePublisherAndCountry() {
 
 		assertTrue(model.add(book1));
-		Book testBook = new Book(book1.getIsbn(), book1.getTitle(), publisher2Country2, LocalDate.now(),
+		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher2Country2, LocalDate.now(),
 				book1.getPrice());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));

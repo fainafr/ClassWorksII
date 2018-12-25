@@ -37,6 +37,6 @@ public interface ILibraryService {
 
 	    public List <Publisher> getAllPublishersByCountry(String country);
 
-		public void clearBooks();
+		public void clearAll();
 
 }

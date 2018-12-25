@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,8 +25,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
-//@Table(name = "authors")
+
+@Entity
+@Table(name = "authors")
 public class Author implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -31,7 +35,8 @@ public class Author implements Serializable {
 	@EmbeddedId
 	AuthorId id;
 	
-	@ManyToMany(mappedBy="authors", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy="authors", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JsonBackReference
 	Set<Book> books = new HashSet<Book>();
 	
 	public Author(AuthorId id) {

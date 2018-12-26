@@ -42,12 +42,13 @@ public class LibraryService implements ILibraryService {
 	
 	@Override
 	@Transactional
+	// order has a meaning. TODO: entities that are cascade saved(?)
 	public boolean add(Book book) {
 
 		if (bookRepo.existsById(book.getIsbn())) return false;
-		authorRepo.saveAll(book.getAuthors());
-		publisherRepo.save(book.getPublisher());
 		countryRepo.save(book.getPublisher().getCountryName());
+		publisherRepo.save(book.getPublisher());
+		authorRepo.saveAll(book.getAuthors());
 		bookRepo.save(book);
 		return true;
 	
@@ -154,7 +155,7 @@ public class LibraryService implements ILibraryService {
 		bookRepo.deleteAll();
 		authorRepo.deleteAll();
 		publisherRepo.deleteAll();
-		//countryRepo.deleteAll();
+		countryRepo.deleteAll();
 		
 		
 	}

@@ -2,7 +2,9 @@ package com.library.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -32,7 +34,8 @@ public class Publisher implements Serializable {
 	@NotNull
 	String publisherName;
 	
-	@ManyToOne // eager by default
+	//@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}) // eager by default
+	@ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "PUBLISHERCOUNTRY")
 	Country countryName;
 

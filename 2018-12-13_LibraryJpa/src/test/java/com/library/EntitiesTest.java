@@ -51,7 +51,6 @@ public class EntitiesTest {
 	private static final Author[] authorArray = { new Author(JOYCE) };
 	private static final Set<Author> AUTHORS = new HashSet<Author>(Arrays.asList(authorArray));
 	private static final Publisher RED_SEA_GERMANY = new Publisher(RED_SEA, new Country(GERMANY));
-
 	private static final Book ULYSSES = new Book(1l, AUTHORS, "ULYSSES", RED_SEA_GERMANY, LocalDate.of(1919, 3, 15),
 			30.);
 
@@ -68,32 +67,113 @@ public class EntitiesTest {
 	public void clear() {
 
 		bookRepo.deleteAll();
+		authorRepo.deleteAll();
 		publisherRepo.deleteAll();
 		countryRepo.deleteAll();
 
 	}
 
+	
+	public void addBookDeleteAuthor() {
+		//TODO: stub;
+	}
+	
+	public void addBookDeletePublisher() {
+		//TODO: stub;
+	}
+			
+	/**
+	 * Testing orphan removal with Country deletion
+	 */
+	@Test
+	public void addPublisherDeleteCountry() {
+
+		
+		Publisher createdPublisher = new Publisher(RED_SEA_GERMANY);
+
+		publisherRepo.save(createdPublisher);
+		publisherRepo.flush();
+
+		assertTrue(countryRepo.existsById(GERMANY));
+		assertTrue(publisherRepo.existsById(RED_SEA));
+
+		countryRepo.deleteById(GERMANY);
+		countryRepo.flush();
+		
+		System.out.println("WHY GERMANY EXISTS? " + countryRepo.findById(GERMANY));
+
+		//TODO: fix me pls
+		assertFalse(countryRepo.existsById(GERMANY));
+		assertFalse(publisherRepo.existsById(RED_SEA));
+
+	}
+
+	
+	/**
+	 * Testing cascade add, without explicit saving;
+	 */
+	@Test
+	public void addBookCascade() {
+
+		Book createdBook = new Book(ULYSSES);
+		bookRepo.save(createdBook);
+		bookRepo.flush();
+
+		Book persistedBook = bookRepo.findById(createdBook.getIsbn()).get();
+		assertTrue(persistedBook.equals(createdBook));
+
+	}
+	
+	/**
+	 * Testing delete, without explicit removing;
+	 */
+	@Test
+	public void deleteBookCascade() {
+		Book createdBook = new Book(ULYSSES);
+	
+		bookRepo.save(createdBook);
+		bookRepo.flush();
+
+		bookRepo.delete(createdBook);
+		bookRepo.flush();
+
+		assertFalse(bookRepo.existsById(createdBook.getIsbn()));
+		//TODO: fix me pls
+		assertTrue(authorRepo.existsById(JOYCE));
+		assertTrue(countryRepo.existsById(GERMANY));
+		assertTrue(publisherRepo.existsById(RED_SEA));
+		
+	}
+	
+	
+	/**
+	 * Testing add, with explicit saving
+	 */
 	@Test
 	public void addBook() {
 		Book createdBook = new Book(ULYSSES);
+
 		for (Author author : createdBook.getAuthors()) {
 			authorRepo.save(author);
 		}
 		authorRepo.flush();
-		
+
 		countryRepo.save(createdBook.getPublisher().getCountryName());
 		countryRepo.flush();
-		
+
 		publisherRepo.save(createdBook.getPublisher());
 		publisherRepo.flush();
-		
+
 		bookRepo.save(createdBook);
 		bookRepo.flush();
-		
+
 		Book persistedBook = bookRepo.findById(createdBook.getIsbn()).get();
 		assertTrue(persistedBook.equals(createdBook));
 	}
 	
+	/**
+	 * Testing delete, with explicit removing;
+	 */
 	@Test
 	public void deleteBook() {
 		Book createdBook = new Book(ULYSSES);
@@ -101,23 +181,25 @@ public class EntitiesTest {
 			authorRepo.save(author);
 		}
 		authorRepo.flush();
-		
+
 		countryRepo.save(createdBook.getPublisher().getCountryName());
 		countryRepo.flush();
-		
+
 		publisherRepo.save(createdBook.getPublisher());
 		publisherRepo.flush();
-		
+
 		bookRepo.save(createdBook);
 		bookRepo.flush();
-		
+
 		bookRepo.delete(createdBook);
 		bookRepo.flush();
-		
+
 		assertFalse(bookRepo.existsById(createdBook.getIsbn()));
 	}
-
-
+	
+	/**
+	 * Testing add, with explicit saving
+	 */
 	@Test
 	public void addAuthor() {
 		Author createdAuthor = new Author(JOYCE);
@@ -131,6 +213,9 @@ public class EntitiesTest {
 
 	}
 
+	/**
+	 * Testing delete, with explicit removing;
+	 */
 	@Test
 	public void removeAuthor() {
 
@@ -144,6 +229,26 @@ public class EntitiesTest {
 
 	}
 
+	/**
+	 * Testing cascade add, without explicit saving;
+	 */
+	@Test
+	public void addPublisherCascade() {
+
+		Publisher createdPublisher = new Publisher(RED_SEA_GERMANY);
+
+		publisherRepo.save(createdPublisher);
+		publisherRepo.flush();
+
+		Publisher persistedPublisher = publisherRepo.findById(RED_SEA).get();
+
+		assertTrue(createdPublisher.equals(persistedPublisher));
+
+	}
+	
+	/**
+	 * Testing add, with explicit saving
+	 */
 	@Test
 	public void addPublisher() {
 
@@ -158,6 +263,9 @@ public class EntitiesTest {
 
 	}
 
+	/**
+	 * Testing add, with explicit saving
+	 */
 	@Test
 	public void addPublisherCountry() {
 
@@ -180,6 +288,9 @@ public class EntitiesTest {
 		assertTrue(createdCountry.equals(persistedCountry));
 	}
 
+	/**
+	 * Testing delete, with explicit removing;
+	 */
 	@Test
 	public void removePublisher() {
 
@@ -193,6 +304,9 @@ public class EntitiesTest {
 
 	}
 
+	/**
+	 * Testing delete, with explicit removing;
+	 */
 	@Test
 	public void removeCountry() {
 
@@ -206,6 +320,9 @@ public class EntitiesTest {
 
 	}
 
+	/**
+	 * Testing delete, with explicit removing;
+	 */
 	@Test
 	public void removePublisherCountry() {
 

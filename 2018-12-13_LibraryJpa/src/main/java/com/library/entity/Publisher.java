@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -22,7 +23,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "publishers")
+@Table(name = "PUBLISHERS")
 public class Publisher implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,14 +32,18 @@ public class Publisher implements Serializable {
 	@NotNull
 	String publisherName;
 	
-	//TODO: length constraint
-	@OneToOne(orphanRemoval=true)
+	@ManyToOne // eager by default
+    @JoinColumn(name = "PUBLISHERCOUNTRY")
 	Country countryName;
-	
-	
-	public Publisher(String name) {
-		this.publisherName = name;
 
+	public Publisher(@NotNull String publisherName) {
+		super();
+		this.publisherName = publisherName;
+	}
+
+	public Publisher(Publisher publisher) {
+		this.publisherName = publisher.getPublisherName();
+		this.countryName = new Country(publisher.getCountryName());
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,15 +33,28 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "books")
+@Table(name = "BOOKS_MTM")
 public class Book implements Serializable {
+
+	/**
+	 * Constructor for defensive copying 
+	 */
+	// TODO: check if new Long and new Double are acceptable idioms; 
+	public Book(Book book) {
+		this.isbn = new Long(book.getIsbn());
+		this.authors = new HashSet<Author>(authors);
+		this.title = book.getTitle();
+		this.publisher = new Publisher(book.getPublisher());
+		this.edition = book.getEdition();
+		this.price = new Double(book.getPrice());
+	}
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	long isbn;
+	Long isbn;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany // (fetch = FetchType.EAGER)
 	@JsonManagedReference // subordinate in m2m relations
 	Set<Author> authors = new HashSet<Author>();
 

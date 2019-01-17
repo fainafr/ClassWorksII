@@ -1,51 +1,51 @@
 package com.library.entity;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-
+@EqualsAndHashCode
+@ToString
 @Entity
-@Table(name = "publishers")
+@Table(name = "PUBLISHERS")
 public class Publisher implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@NotNull
 	String publisherName;
-
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	
+	@ManyToOne(cascade = CascadeType.ALL) //TODO: {CascadeType.MERGE, CascadeType.PERSIST} org.hibernate.ObjectDeletedException: deleted object would be re-saved by cascade
+    @JoinColumn(name = "PUBLISHERCOUNTRY")
 	Country countryName;
 
-	@OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	Set<Book> books;
-
-	public Publisher(String name) {
-		this.publisherName = name;
-
+	public Publisher(@NotNull String publisherName) {
+		super();
+		this.publisherName = publisherName;
 	}
 
-	public Publisher(String name, Country countryName) {
-		this.publisherName = name;
-		this.countryName = countryName;
-
+	public Publisher(Publisher publisher) {
+		this.publisherName = publisher.getPublisherName();
+		this.countryName = new Country(publisher.getCountryName());
 	}
+
 }

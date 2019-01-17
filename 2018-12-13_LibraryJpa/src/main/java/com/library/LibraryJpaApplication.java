@@ -7,8 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LibraryJpaApplication {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(LibraryJpaApplication.class, args);
+		
 	}
 
-}
 
+}

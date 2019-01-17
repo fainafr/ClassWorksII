@@ -39,13 +39,16 @@ public class LibraryService implements ILibraryService {
 	
 	}
 	
-	@Transactional
+	
 	@Override
+	@Transactional
+	// order has a meaning. TODO: entities that are cascade saved(?)
 	public boolean add(Book book) {
 
 		if (bookRepo.existsById(book.getIsbn())) return false;
-		publisherRepo.save(book.getPublisher());
 		countryRepo.save(book.getPublisher().getCountryName());
+		publisherRepo.save(book.getPublisher());
+		authorRepo.saveAll(book.getAuthors());
 		bookRepo.save(book);
 		return true;
 	
@@ -55,7 +58,10 @@ public class LibraryService implements ILibraryService {
 	@Transactional
 	public Book delete(long isbn) {
 		
-		if (!bookRepo.existsById(isbn)) return new Book();
+		if (!bookRepo.existsById(isbn)) {
+			
+			return new Book();
+		}
 		Book book = getBook(isbn);
 		bookRepo.deleteById(isbn);
 		return book;
@@ -70,14 +76,15 @@ public class LibraryService implements ILibraryService {
 			add(book);
 			return book;
 		}
-		publisherRepo.save(book.getPublisher());
-		countryRepo.save(book.getPublisher().getCountryName());
-		return bookRepo.save(book); 
+	    publisherRepo.save(book.getPublisher());
+	 	countryRepo.save(book.getPublisher().getCountryName());
+	
+		 bookRepo.save(book); 
+		 return getBook(book.getIsbn());
 	
 	}
 	
 	@Override
-	@Transactional
 	public boolean addRandomBook() {	
 		return add(RandomConfig.randomBook());
 	}
@@ -140,6 +147,17 @@ public class LibraryService implements ILibraryService {
 	public List<Publisher> getAllPublishersByCountry(String country) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void clearAll() {
+		
+		bookRepo.deleteAll();
+		authorRepo.deleteAll();
+		publisherRepo.deleteAll();
+		countryRepo.deleteAll();
+		
+		
 	}
 
 }

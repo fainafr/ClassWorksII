@@ -54,7 +54,7 @@ public class Book implements Serializable {
 	@Id
 	Long isbn;
 
-	@ManyToMany // (fetch = FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // (fetch = FetchType.EAGER)
 	@JsonManagedReference // subordinate in m2m relations
 	Set<Author> authors = new HashSet<Author>();
 

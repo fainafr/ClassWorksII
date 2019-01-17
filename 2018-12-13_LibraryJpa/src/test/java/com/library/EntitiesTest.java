@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
@@ -54,6 +57,9 @@ public class EntitiesTest {
 	private static final Book ULYSSES = new Book(1l, AUTHORS, "ULYSSES", RED_SEA_GERMANY, LocalDate.of(1919, 3, 15),
 			30.);
 
+	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
+	private EntityManager em;
+	
 	@Autowired
 	IBookRepo bookRepo;
 	@Autowired
@@ -82,31 +88,7 @@ public class EntitiesTest {
 		//TODO: stub;
 	}
 			
-	/**
-	 * Testing orphan removal with Country deletion
-	 */
-	@Test
-	public void addPublisherDeleteCountry() {
-
-		
-		Publisher createdPublisher = new Publisher(RED_SEA_GERMANY);
-
-		publisherRepo.save(createdPublisher);
-		publisherRepo.flush();
-
-		assertTrue(countryRepo.existsById(GERMANY));
-		assertTrue(publisherRepo.existsById(RED_SEA));
-
-		countryRepo.deleteById(GERMANY);
-		countryRepo.flush();
-		
-		System.out.println("WHY GERMANY EXISTS? " + countryRepo.findById(GERMANY));
-
-		//TODO: fix me pls
-		assertFalse(countryRepo.existsById(GERMANY));
-		assertFalse(publisherRepo.existsById(RED_SEA));
-
-	}
+	
 
 	
 	/**
@@ -335,6 +317,9 @@ public class EntitiesTest {
 		createdPublisher.setCountryName(countryRepo.findById(GERMANY).get());
 		publisherRepo.save(createdPublisher);
 		publisherRepo.flush();
+		
+		assertTrue(countryRepo.existsById(GERMANY));
+		assertTrue(publisherRepo.existsById(RED_SEA));
 
 		countryRepo.deleteById(GERMANY);
 		publisherRepo.deleteById(RED_SEA);
@@ -342,5 +327,42 @@ public class EntitiesTest {
 		assertFalse(countryRepo.existsById(GERMANY));
 		assertFalse(publisherRepo.existsById(RED_SEA));
 
+	}
+	
+	/**
+	 * Testing orphan removal with Country deletion
+	 */
+	@Test
+	public void addPublisherDeleteCountry() {
+
+		
+		Publisher createdPublisher = new Publisher(RED_SEA_GERMANY);
+
+		publisherRepo.save(createdPublisher);
+		publisherRepo.flush();
+
+
+		
+		countryRepo.deleteById(GERMANY);
+		countryRepo.flush();
+		assertTrue(countryRepo.existsById(GERMANY));
+		
+		System.out.println("CONTAINS " + em.contains(new Country(GERMANY)));
+		
+		em.remove(new Country(GERMANY)); //remove detached state?!
+		//TODO: check in which state is object
+		
+		System.out.println("WHY GERMANY EXISTS? " + countryRepo.findById(GERMANY));
+
+		//TODO: fix me pls
+		assertFalse(countryRepo.existsById(GERMANY));
+		assertFalse(publisherRepo.existsById(RED_SEA));
+
+	}
+	
+	public boolean isDetachedCountry(Country country) { 
+	    return country.getCountryName() != null  // must not be transient // wouldn't work with manual id;
+	        && !em.contains(country)  // must not be managed now
+	        && em.find(Country.class, country.getCountryName()) != null;  // must not have been removed
 	}
 }

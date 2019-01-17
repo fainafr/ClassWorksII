@@ -34,8 +34,7 @@ public class Publisher implements Serializable {
 	@NotNull
 	String publisherName;
 	
-	//@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}) // eager by default
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne(cascade = CascadeType.ALL) //TODO: {CascadeType.MERGE, CascadeType.PERSIST} org.hibernate.ObjectDeletedException: deleted object would be re-saved by cascade
     @JoinColumn(name = "PUBLISHERCOUNTRY")
 	Country countryName;
 

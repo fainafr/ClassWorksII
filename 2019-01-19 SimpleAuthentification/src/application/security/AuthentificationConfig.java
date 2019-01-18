@@ -11,10 +11,13 @@ import application.controllers.API_const;
 public class AuthentificationConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
-	protected void configure(HttpSecurity http)throws Exception{
+	protected void configure(HttpSecurity http)throws Exception{ //HTTPSec is autocreated? 
 		
-		http.csrf().disable();//allows for spring security 2 running POST requests
-		http.httpBasic();//enabling web security
+		/*
+		 * Invocations. Without 1st no POST request; 
+		 */
+		http.csrf().disable();//allows for spring security 2 running POST requests 
+		http.httpBasic();//enabling web security 
 		
 		//only ADMIN may perform the following requests
 		http.authorizeRequests().antMatchers(API_const.ADMIN_CONTROLLER+API_const.ADD_ACCOUNT,
@@ -24,6 +27,7 @@ public class AuthentificationConfig extends WebSecurityConfigurerAdapter {
 											API_const.ADMIN_CONTROLLER+API_const.GET_ROLES,
 											API_const.USER_CONTROLLER+API_const.ADMIN
 		).hasRole("ADMIN");
+		
 		
 		//only MANAGER and ADMIN may perform the following requests
 		http.authorizeRequests().antMatchers(API_const.USER_CONTROLLER+API_const.MANAGER).hasAnyRole("ADMIN","MANAGER");

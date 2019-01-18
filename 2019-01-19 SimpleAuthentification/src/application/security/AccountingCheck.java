@@ -28,5 +28,8 @@ public class AccountingCheck implements UserDetailsService{
 		String[] roles = accounts.getRoles(username);
 		System.out.println(AuthorityUtils.createAuthorityList(roles));
 		return new User(username, "{noop}"+password, AuthorityUtils.createAuthorityList(roles));
+		/*
+		 * {noop} == no encoding; 
+		 */
 	}
 }

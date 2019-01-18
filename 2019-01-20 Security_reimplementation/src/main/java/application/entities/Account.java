@@ -1,5 +1,6 @@
 package application.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,35 +21,33 @@ import lombok.Setter;
 @Table(name="accounts")
 public class Account {
 	
-	/*
-	 * Only on ID the length must be explicit. JPA feature. 
-	 */
+	
 	@Id
-	@Column(length=100) 
+	@Column(length=100)
 	private String login;
 	private String password;
 	
 	@ManyToMany(mappedBy="accounts", cascade=CascadeType.ALL) 
-	private Set<Role> roles; // why not one2many?
+	private Set<Role> roles = new HashSet<>();
 	
 	public Account(String login, String password) {
+		super();
 		this.login = login;
 		this.password = password;
-	}
-	
-	public Set<Role> addRoleToSet(Role role){
-		roles.add(role);
-		return roles;
 	}
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		return result;
 	}
 	
+	/*
+	 * Ignoring roles in equals for M2M relation; 
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -58,13 +57,16 @@ public class Account {
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
+		if (login == null) {
+			if (other.login != null)
+				return false;
+		} else if (!login.equals(other.login))
+			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
 		return true;
-	}	
-	
-	
+	}
 }

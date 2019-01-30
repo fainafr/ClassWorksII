@@ -1,5 +1,6 @@
 package com.h2testing.repo;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import javax.annotation.Resource;
@@ -44,8 +45,8 @@ public class InMemoryDBTest {
     	Student student = new Student(ID, NAME);
         studentRepository.save(student);
 
-     //   Student student2 = studentRepository.findById(ID).get();
-       // assertEquals("name incorrect", NAME, student2.getName());
+        Student student2 = studentRepository.findById(ID).get();
+        assertEquals("name incorrect", NAME, student2.getName());
     }
     
     @Test

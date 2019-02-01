@@ -42,7 +42,7 @@ public class Book implements Serializable {
 	// TODO: check if new Long and new Double are acceptable idioms; 
 	public Book(Book book) {
 		this.isbn = new Long(book.getIsbn());
-		this.authors = new HashSet<Author>(authors);
+		this.authors = new HashSet<Author>(book.getAuthors());
 		this.title = book.getTitle();
 		this.publisher = new Publisher(book.getPublisher());
 		this.edition = book.getEdition();

@@ -20,6 +20,7 @@ import com.library.repo.IPublisherRepo;
 
 //@Transactional do we have to have it on class level?
 @Service
+@Transactional
 public class LibraryService implements ILibraryService {
 
 	@Autowired
@@ -31,32 +32,50 @@ public class LibraryService implements ILibraryService {
 	@Autowired
 	IPublisherRepo publisherRepo;
 	
+	
 	@Override
-	public Book getBook(long isbn) {
+	public boolean containsBook(Long isbn){
+		
+		return bookRepo.existsById(isbn);
+		
+	}
+	
+	@Override
+	public Book getBook(Long isbn) {
 
-		return bookRepo.findById(isbn).orElse(new Book());
+		
+		Book persistedBook = bookRepo.findById(isbn).get(); //.orElse(new Book());
+		return persistedBook; //; bookRepo.findById(isbn).orElse(new Book());
 		// https://stackoverflow.com/a/24486114
 	
 	}
 	
 	
 	@Override
-	@Transactional
-	// order has a meaning. TODO: entities that are cascade saved(?)
 	public boolean add(Book book) {
 
 		if (bookRepo.existsById(book.getIsbn())) return false;
+		
+		for (Author author : book.getAuthors()) {
+			authorRepo.save(author);
+		}
+		authorRepo.flush();
+		
 		countryRepo.save(book.getPublisher().getCountryName());
+		countryRepo.flush();
+		
 		publisherRepo.save(book.getPublisher());
-		authorRepo.saveAll(book.getAuthors());
+		publisherRepo.flush();
+		
 		bookRepo.save(book);
+		bookRepo.flush();
+		
 		return true;
 	
 	}
 	
 	@Override
-	@Transactional
-	public Book delete(long isbn) {
+	public Book delete(Long isbn) {
 		
 		if (!bookRepo.existsById(isbn)) {
 			
@@ -69,7 +88,6 @@ public class LibraryService implements ILibraryService {
 	}
 	
 	@Override
-	@Transactional
 	public Book update(Book book) { // no difference at all in add and update 
 		
 		if (!bookRepo.existsById(book.getIsbn())) {

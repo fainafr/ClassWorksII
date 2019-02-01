@@ -89,8 +89,6 @@ public class LibraryServiceTest {
 		books.add(book2);
 		books.add(book3);
 		books.add(book4);
-
-		model.clearAll();
 	}
 
 	@After
@@ -101,6 +99,9 @@ public class LibraryServiceTest {
 	@Test
 	public void getBook() {
 		model.add(book1);
+		System.out.println(book1.toString());
+		assertTrue(model.containsBook(book1.getIsbn()));
+		System.out.println(model.getBook(book1.getIsbn()).toString());
 		assertEquals(model.getBook(book1.getIsbn()), book1);
 	}
 

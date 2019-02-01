@@ -51,7 +51,8 @@ public class EntitiesTest {
 	private static final Publisher RED_SEA_GERMANY = new Publisher(RED_SEA, new Country(GERMANY));
 	private static final Book ULYSSES = new Book(1l, AUTHORS, "ULYSSES", RED_SEA_GERMANY, LocalDate.of(1919, 3, 15),
 			30.);
-
+	
+	
 	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
 	private EntityManager em;
 	
@@ -128,7 +129,7 @@ public class EntitiesTest {
 	@Test
 	public void addBook() {
 		Book createdBook = new Book(ULYSSES);
-
+		
 		for (Author author : createdBook.getAuthors()) {
 			authorRepo.save(author);
 		}
@@ -144,6 +145,7 @@ public class EntitiesTest {
 		bookRepo.flush();
 
 		Book persistedBook = bookRepo.findById(createdBook.getIsbn()).get();
+		System.out.println(persistedBook.toString());
 		assertTrue(persistedBook.equals(createdBook));
 	}
 	

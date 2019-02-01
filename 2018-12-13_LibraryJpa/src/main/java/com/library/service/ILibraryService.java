@@ -9,11 +9,13 @@ import com.library.entity.Publisher;
 
 public interface ILibraryService {
 
-	    public Book getBook(long isbn);
+	    public boolean containsBook(Long isbn);
+	
+	    public Book getBook(Long isbn);
 
 	    public boolean add(Book book);
 
-	    public Book delete(long isbn);
+	    public Book delete(Long isbn);
 
 	    public Book update(Book book);
 

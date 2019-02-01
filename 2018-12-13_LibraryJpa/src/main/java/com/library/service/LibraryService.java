@@ -18,7 +18,6 @@ import com.library.repo.IBookRepo;
 import com.library.repo.ICountryRepo;
 import com.library.repo.IPublisherRepo;
 
-//@Transactional do we have to have it on class level?
 @Service
 @Transactional
 public class LibraryService implements ILibraryService {
@@ -31,7 +30,6 @@ public class LibraryService implements ILibraryService {
 	ICountryRepo countryRepo;
 	@Autowired
 	IPublisherRepo publisherRepo;
-	
 	
 	@Override
 	public boolean containsBook(Long isbn){
@@ -67,8 +65,11 @@ public class LibraryService implements ILibraryService {
 		publisherRepo.save(book.getPublisher());
 		publisherRepo.flush();
 		
-		bookRepo.save(book);
+		System.out.println(bookRepo.toString());
+		System.out.println(bookRepo.save(book));
 		bookRepo.flush();
+		
+		System.out.println(bookRepo.findById(book.getIsbn()).toString());
 		
 		return true;
 	

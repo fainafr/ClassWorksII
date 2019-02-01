@@ -12,15 +12,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
-import javax.transaction.Transactional;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -29,10 +28,14 @@ import com.library.entity.AuthorId;
 import com.library.entity.Book;
 import com.library.entity.Country;
 import com.library.entity.Publisher;
+import com.library.repo.IAuthorRepo;
+import com.library.repo.IBookRepo;
+import com.library.repo.ICountryRepo;
+import com.library.repo.IPublisherRepo;
 import com.library.service.ILibraryService;
+import com.library.service.LibraryService;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
 @ActiveProfiles("test")
 public class LibraryServiceTest {
 
@@ -58,6 +61,22 @@ public class LibraryServiceTest {
 	private Country country1;
 	private Country country2;
 
+	@TestConfiguration
+	static class LibraryServiceTestContextConfig{
+		@Bean
+		public ILibraryService libraryService() {
+			return new LibraryService();
+		}
+	}
+	@MockBean
+	IBookRepo bookRepo;
+	@MockBean
+	IAuthorRepo authorRepo;
+	@MockBean
+	ICountryRepo countryRepo;
+	@MockBean
+	IPublisherRepo publisherRepo;
+	
 	@Autowired
 	private ILibraryService model;
 
@@ -111,6 +130,7 @@ public class LibraryServiceTest {
 	@Test
 	public void add() {
 		assertTrue(model.add(book1));
+		assertTrue(model.containsBook(book1.getIsbn()));
 		assertFalse(model.add(book1));
 	}
 	

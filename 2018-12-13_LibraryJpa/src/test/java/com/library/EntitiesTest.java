@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -17,8 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.library.entity.Author;
@@ -31,19 +30,15 @@ import com.library.repo.IBookRepo;
 import com.library.repo.ICountryRepo;
 import com.library.repo.IPublisherRepo;
 
-import lombok.NoArgsConstructor;
-
 /**
  * Testing creation and deletion of entities to ensure relations work as
  * intended;
  * 
  */
-//TODO: migrate to H2 database;
-@NoArgsConstructor
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@DataJpaTest
+@ActiveProfiles("test")
 @Transactional
-@Commit
 public class EntitiesTest {
 
 	// TODO: create-delete author and book please

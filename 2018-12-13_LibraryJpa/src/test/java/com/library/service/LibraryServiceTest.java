@@ -1,4 +1,4 @@
-package com.library;
+package com.library.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -16,6 +17,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -129,6 +131,11 @@ public class LibraryServiceTest {
 
 	@Test
 	public void add() {
+
+		Mockito.when(bookRepo.existsById(book1.getIsbn())).thenReturn(false).thenReturn(true);	
+		Mockito.when(bookRepo.save(book1)).thenReturn(book1);
+		Mockito.when(bookRepo.findById(book1.getIsbn())).thenReturn(Optional.of(book1));
+				
 		assertTrue(model.add(book1));
 		assertTrue(model.containsBook(book1.getIsbn()));
 		assertFalse(model.add(book1));

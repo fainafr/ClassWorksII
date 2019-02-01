@@ -1,4 +1,4 @@
-package com.library;
+package com.library.entity;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

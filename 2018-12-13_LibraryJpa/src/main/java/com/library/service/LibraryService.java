@@ -33,19 +33,12 @@ public class LibraryService implements ILibraryService {
 	
 	@Override
 	public boolean containsBook(Long isbn){
-		
 		return bookRepo.existsById(isbn);
-		
 	}
 	
 	@Override
 	public Book getBook(Long isbn) {
-
-		
-		Book persistedBook = bookRepo.findById(isbn).get(); //.orElse(new Book());
-		return persistedBook; //; bookRepo.findById(isbn).orElse(new Book());
-		// https://stackoverflow.com/a/24486114
-	
+		return bookRepo.findById(isbn).get(); 
 	}
 	
 	

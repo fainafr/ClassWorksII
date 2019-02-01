@@ -102,7 +102,7 @@ public class EntitiesTest {
 	}
 	
 	/**
-	 * Testing delete, without explicit removing;
+	 * Testing delete, without explicit removing; cascade works;
 	 */
 	@Test
 	public void deleteBookCascade() {
@@ -115,10 +115,9 @@ public class EntitiesTest {
 		bookRepo.flush();
 
 		assertFalse(bookRepo.existsById(createdBook.getIsbn()));
-		//TODO: fix me pls
-		assertTrue(authorRepo.existsById(JOYCE));
-		assertTrue(countryRepo.existsById(GERMANY));
-		assertTrue(publisherRepo.existsById(RED_SEA));
+		assertFalse(authorRepo.existsById(JOYCE));
+		assertFalse(countryRepo.existsById(GERMANY));
+		assertFalse(publisherRepo.existsById(RED_SEA));
 		
 	}
 	
@@ -330,26 +329,19 @@ public class EntitiesTest {
 	@Test
 	public void addPublisherDeleteCountry() {
 
-		
 		Publisher createdPublisher = new Publisher(RED_SEA_GERMANY);
-
 		publisherRepo.save(createdPublisher);
 		publisherRepo.flush();
-
-
-		
-		countryRepo.deleteById(GERMANY);
-		countryRepo.flush();
 		assertTrue(countryRepo.existsById(GERMANY));
 		
-		System.out.println("CONTAINS " + em.contains(new Country(GERMANY)));
+		createdPublisher.setCountryName(null); // needs to explicitly set country to null before deleting it; 
+		publisherRepo.save(createdPublisher);
+		publisherRepo.flush();
+		countryRepo.deleteById(GERMANY); 
+		countryRepo.flush();
+		assertFalse(countryRepo.existsById(GERMANY));
 		
-		em.remove(new Country(GERMANY)); //remove detached state?!
-		//TODO: check in which state is object
-		
-		System.out.println("WHY GERMANY EXISTS? " + countryRepo.findById(GERMANY));
-
-		//TODO: fix me pls
+		publisherRepo.deleteById(RED_SEA_GERMANY.getPublisherName()); // deleting publisher explicitly
 		assertFalse(countryRepo.existsById(GERMANY));
 		assertFalse(publisherRepo.existsById(RED_SEA));
 

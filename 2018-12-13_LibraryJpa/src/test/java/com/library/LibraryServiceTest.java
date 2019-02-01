@@ -12,12 +12,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.transaction.Transactional;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.library.entity.Author;
@@ -28,7 +32,8 @@ import com.library.entity.Publisher;
 import com.library.service.ILibraryService;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@DataJpaTest
+@ActiveProfiles("test")
 public class LibraryServiceTest {
 
 	public LibraryServiceTest() {
@@ -99,9 +104,7 @@ public class LibraryServiceTest {
 	@Test
 	public void getBook() {
 		model.add(book1);
-		System.out.println(book1.toString());
-		assertTrue(model.containsBook(book1.getIsbn()));
-		System.out.println(model.getBook(book1.getIsbn()).toString());
+		assertTrue(model.containsBook(book1.getIsbn()));  // works only with eager fetch; 
 		assertEquals(model.getBook(book1.getIsbn()), book1);
 	}
 

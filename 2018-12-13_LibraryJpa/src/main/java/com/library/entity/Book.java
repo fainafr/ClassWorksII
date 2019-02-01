@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,15 +53,17 @@ public class Book implements Serializable {
 	@Id
 	Long isbn;
 
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY) // works only with eager fetch; 
-	@JsonManagedReference // subordinate in m2m relations
+	/*
+	 * Can't cascade.all because in m2m cascading delete book will get other books orphaned, throwing an exception. 
+	 */
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	Set<Author> authors = new HashSet<Author>();
 
 	String title;
 	
-	@ToString.Exclude
-	@EqualsAndHashCode.Exclude
-	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL) // can't serialize publisher with lazy fetch;
+	@JsonManagedReference
 	Publisher publisher;
 
 	@Convert(converter = LocalDateConverter.class)

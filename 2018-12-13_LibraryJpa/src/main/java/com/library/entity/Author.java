@@ -39,11 +39,11 @@ public class Author implements Serializable {
 	@NotNull
 	AuthorId id;
 	
-	@ManyToMany(mappedBy="authors", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy="authors", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonBackReference
 	Set<Book> books = new HashSet<Book>();
 	
-	public Author(@NotNull AuthorId id) {
+	public Author(@NotNull AuthorId id) {	
 		this.id = id;
 	}
 	

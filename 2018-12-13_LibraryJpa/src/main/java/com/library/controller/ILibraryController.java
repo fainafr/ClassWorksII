@@ -40,5 +40,7 @@ public interface ILibraryController {
 	List<Book> fillRepository(int amount);
 
 	List<Publisher> getAllPublishersByCountry(String country);
+	
+	boolean clear();
 
 }

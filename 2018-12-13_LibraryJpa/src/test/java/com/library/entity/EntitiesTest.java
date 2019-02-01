@@ -51,6 +51,8 @@ public class EntitiesTest {
 	private static final Publisher RED_SEA_GERMANY = new Publisher(RED_SEA, new Country(GERMANY));
 	private static final Book ULYSSES = new Book(1l, AUTHORS, "ULYSSES", RED_SEA_GERMANY, LocalDate.of(1919, 3, 15),
 			30.);
+	private static final Book EXILES = new Book(1l, AUTHORS, "Exiles and poetry", RED_SEA_GERMANY, LocalDate.of(1918, 1, 1),
+			30.);
 	
 	
 	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
@@ -76,52 +78,42 @@ public class EntitiesTest {
 	}
 
 	
-	public void addBookDeleteAuthor() {
-		//TODO: stub;
-	}
-	
-	public void addBookDeletePublisher() {
-		//TODO: stub;
-	}
-			
-	
-
-	
 	/**
-	 * Testing cascade add, without explicit saving;
+	 * M2M cascade problem; 
 	 */
-	@Test
-	public void addBookCascade() {
+	public void addTwoBookBySameAuthorDeleteBook() {
 
-		Book createdBook = new Book(ULYSSES);
-		bookRepo.save(createdBook);
+		Book exiles = new Book(EXILES);
+		Book ulysses = new Book(ULYSSES);
+		
+		bookRepo.save(exiles);
+		bookRepo.save(ulysses);
 		bookRepo.flush();
-
-		Book persistedBook = bookRepo.findById(createdBook.getIsbn()).get();
-		assertTrue(persistedBook.equals(createdBook));
-
-	}
-	
-	/**
-	 * Testing delete, without explicit removing; cascade works;
-	 */
-	@Test
-	public void deleteBookCascade() {
-		Book createdBook = new Book(ULYSSES);
-	
-		bookRepo.save(createdBook);
+		
+		assertTrue(bookRepo.existsById(exiles.getIsbn()));
+		for (Author author : exiles.getAuthors()) {
+			assertTrue(authorRepo.existsById(author.getId()));
+		}
+		assertTrue(countryRepo.existsById(exiles.getPublisher().getCountryName().getCountryName()));
+		assertTrue(publisherRepo.existsById(exiles.getPublisher().getPublisherName()));
+		
+		assertTrue(bookRepo.existsById(ulysses.getIsbn()));
+		for (Author author : ulysses.getAuthors()) {
+			assertTrue(authorRepo.existsById(author.getId()));
+		}
+		assertTrue(countryRepo.existsById(ulysses.getPublisher().getCountryName().getCountryName()));
+		assertTrue(publisherRepo.existsById(ulysses.getPublisher().getPublisherName()));
+		
+		bookRepo.delete(exiles);
+		bookRepo.delete(ulysses);
 		bookRepo.flush();
-
-		bookRepo.delete(createdBook);
-		bookRepo.flush();
-
-		assertFalse(bookRepo.existsById(createdBook.getIsbn()));
-		assertFalse(authorRepo.existsById(JOYCE));
-		assertFalse(countryRepo.existsById(GERMANY));
-		assertFalse(publisherRepo.existsById(RED_SEA));
+		
+		assertFalse(bookRepo.existsById(exiles.getIsbn()));
+		assertFalse(bookRepo.existsById(ulysses.getIsbn()));
 		
 	}
 	
+
 	
 	/**
 	 * Testing add, with explicit saving
@@ -145,9 +137,26 @@ public class EntitiesTest {
 		bookRepo.flush();
 
 		Book persistedBook = bookRepo.findById(createdBook.getIsbn()).get();
-		System.out.println(persistedBook.toString());
 		assertTrue(persistedBook.equals(createdBook));
 	}
+	
+	
+	/**
+	 * Testing cascade add, without explicit saving;
+	 */
+	@Test
+	public void addBookCascade() {
+
+		Book createdBook = new Book(ULYSSES);
+		bookRepo.save(createdBook);
+		bookRepo.flush();
+
+		Book persistedBook = bookRepo.findById(createdBook.getIsbn()).get();
+		assertTrue(persistedBook.equals(createdBook));
+
+	}
+
+	
 	
 	/**
 	 * Testing delete, with explicit removing;
@@ -168,12 +177,58 @@ public class EntitiesTest {
 
 		bookRepo.save(createdBook);
 		bookRepo.flush();
+		
+		assertTrue(bookRepo.existsById(createdBook.getIsbn()));
+		for (Author author : createdBook.getAuthors()) {
+			assertTrue(authorRepo.existsById(author.getId()));
+		}
+		assertTrue(countryRepo.existsById(createdBook.getPublisher().getCountryName().getCountryName()));
+		assertTrue(publisherRepo.existsById(createdBook.getPublisher().getPublisherName()));
 
 		bookRepo.delete(createdBook);
 		bookRepo.flush();
+		
+		for (Author author : createdBook.getAuthors()) {
+			authorRepo.delete(author);
+		}
+		authorRepo.flush();
 
 		assertFalse(bookRepo.existsById(createdBook.getIsbn()));
+		for (Author author : createdBook.getAuthors()) {
+			assertFalse(authorRepo.existsById(author.getId()));
+		}
+		assertFalse(countryRepo.existsById(createdBook.getPublisher().getCountryName().getCountryName()));
+		assertFalse(publisherRepo.existsById(createdBook.getPublisher().getPublisherName()));
 	}
+	
+	
+	
+	/**
+	 * Testing delete, without explicit removing;
+	 */
+	@Test
+	public void deleteBookCascade() {
+		
+		Book createdBook = new Book(ULYSSES);
+	
+		bookRepo.save(createdBook);
+		bookRepo.flush();
+
+		bookRepo.delete(createdBook);
+		bookRepo.flush();
+		
+		for (Author author : createdBook.getAuthors()) {
+			authorRepo.delete(author);
+		}
+		authorRepo.flush();
+
+		assertFalse(bookRepo.existsById(createdBook.getIsbn()));
+		assertFalse(authorRepo.existsById(JOYCE));
+		assertFalse(countryRepo.existsById(GERMANY));
+		assertFalse(publisherRepo.existsById(RED_SEA));
+		
+	}
+	
 	
 	/**
 	 * Testing add, with explicit saving

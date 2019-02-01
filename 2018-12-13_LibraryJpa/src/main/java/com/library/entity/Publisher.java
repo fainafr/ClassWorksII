@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,6 +38,7 @@ public class Publisher implements Serializable {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PUBLISHERCOUNTRY")
+	@JsonManagedReference
 	Country countryName;
 
 	public Publisher(@NotNull String publisherName) {

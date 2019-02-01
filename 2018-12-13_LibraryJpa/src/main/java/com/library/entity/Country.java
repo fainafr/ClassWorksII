@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,6 +40,7 @@ public class Country implements Serializable{
 	String countryName;
 	
 	@OneToMany(mappedBy = "countryName", cascade=CascadeType.ALL)
+	@JsonBackReference
 	Set<Publisher> publishers = new HashSet<Publisher>();
 	
 	public Country(@NotNull String countryName) {

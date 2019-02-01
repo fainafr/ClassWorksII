@@ -58,11 +58,11 @@ public class LibraryService implements ILibraryService {
 		publisherRepo.save(book.getPublisher());
 		publisherRepo.flush();
 		
-		System.out.println(bookRepo.toString());
-		System.out.println(bookRepo.save(book));
+
+		System.out.println("Adding... " + bookRepo.save(book));
+
 		bookRepo.flush();
-		
-		System.out.println(bookRepo.findById(book.getIsbn()).toString());
+;
 		
 		return true;
 	
@@ -162,12 +162,21 @@ public class LibraryService implements ILibraryService {
 	}
 
 	@Override
-	public void clearAll() {
+	public boolean clearAll() {
 		
-		bookRepo.deleteAll();
+		List<Book> books = getAll();
+		for (Book book : books) {
+			System.out.println("Deleting.... " + book.toString());
+			bookRepo.delete(book);
+		}
+		bookRepo.flush();	
+		
+		/*
+		 * the problem with m2m is that if cascade.all then any book can be wrongly orphaned. 
+		 */
 		authorRepo.deleteAll();
-		publisherRepo.deleteAll();
-		countryRepo.deleteAll();
+		authorRepo.flush();
+		return true;
 		
 		
 	}

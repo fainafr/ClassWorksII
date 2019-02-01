@@ -26,72 +26,48 @@ public class LibraryController implements ILibraryController {
     @Autowired
     ILibraryService libraryService;
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#addRandomBook()
-	 */
     @Override
 	@GetMapping("/randomBook")
     public boolean addRandomBook() {
         return libraryService.addRandomBook();
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#getBook(long)
-	 */
     @Override
 	@GetMapping("/book/{id}")
     public Book getBook(@PathVariable long id) {
         return libraryService.getBook(id);
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#addBook(com.library.entity.Book)
-	 */
     @Override
 	@PostMapping("/book")
     public boolean addBook(@RequestBody Book book) {
         return libraryService.add(book);
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#deleteBook(long)
-	 */
     @Override
 	@DeleteMapping("/book/{id}")
     public Book deleteBook(@PathVariable long id) {
         return libraryService.delete(id);
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#updateBook(com.library.entity.Book)
-	 */
     @Override
 	@PutMapping("/book")
     public Book updateBook(@RequestBody Book book) {
         return libraryService.update(book);
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#getAll()
-	 */
     @Override
 	@GetMapping("/get_all")
     public List <Book> getAll() {
         return libraryService.getAll();
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#getAllBooksByPublisher(java.lang.String)
-	 */
     @Override
 	@GetMapping("/get_all/publisher/{publishername}")
     public List <Book> getAllBooksByPublisher(@PathVariable String publisherName) {
         return libraryService.getAllBooksByPublisher(new Publisher(publisherName));
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#getAllBooksByAuthor(java.lang.String, java.lang.String)
-	 */
     @Override
 	@GetMapping("get_all/author/")
     public List <Book> getAllBooksByAuthor(@RequestParam String firstName,
@@ -99,9 +75,6 @@ public class LibraryController implements ILibraryController {
         return libraryService.getAllBooksByAuthor(new Author(new AuthorId(firstName, lastName)));
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#getAllBooksBetweenEditon(java.time.LocalDate, java.time.LocalDate)
-	 */
     @Override
 	@GetMapping("get_all/edition")
     public List <Book> getAllBooksBetweenEditon(
@@ -110,9 +83,6 @@ public class LibraryController implements ILibraryController {
         return libraryService.getAllBooksBetweenEdition(from, to);
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#getAllBooksBetweenPrice(double, double)
-	 */
     @Override
 	@GetMapping("get_all/price")
     public List <Book> getAllBooksBetweenPrice(@RequestParam double from,
@@ -120,9 +90,6 @@ public class LibraryController implements ILibraryController {
         return libraryService.getAllBooksBetweenPrice(from, to);
     }
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#fillRepository(int)
-	 */
     @Override
 	@PostMapping("/fill_repo")
     public List <Book> fillRepository(@RequestParam int amount) {
@@ -130,12 +97,15 @@ public class LibraryController implements ILibraryController {
     }
 
 
-    /* (non-Javadoc)
-	 * @see com.library.controller.ILibraryController#getAllPublishersByCountry(java.lang.String)
-	 */
     @Override
 	@GetMapping("/publisher")
     public List<Publisher> getAllPublishersByCountry(@RequestParam String country){
         return libraryService.getAllPublishersByCountry(country);
     }
+
+	@Override
+	@PostMapping("/clear_repo")
+	public boolean clear() {
+		return libraryService.clearAll();
+	}
 }

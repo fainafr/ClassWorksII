@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -20,11 +21,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.library.entity.Author;
-import com.library.entity.AuthorId;
-import com.library.entity.Book;
-import com.library.entity.Country;
-import com.library.entity.Publisher;
 import com.library.repo.IAuthorRepo;
 import com.library.repo.IBookRepo;
 import com.library.repo.ICountryRepo;
@@ -45,8 +41,9 @@ public class EntitiesTest {
 
 	private static final String GERMANY = "Germany";
 	private static final String RED_SEA = "Red Sea";
+	private static final List<Integer> JOYCEMARKS = Arrays.asList(new Integer[]{5, 5, 4});
 	private static final AuthorId JOYCE = new AuthorId("James", "Joyce");
-	private static final Author[] authorArray = { new Author(JOYCE) };
+	private static final Author[] authorArray = { new Author(JOYCE, JOYCEMARKS) };
 	private static final Set<Author> AUTHORS = new HashSet<Author>(Arrays.asList(authorArray));
 	private static final Publisher RED_SEA_GERMANY = new Publisher(RED_SEA, new Country(GERMANY));
 	private static final Book ULYSSES = new Book(1l, AUTHORS, "ULYSSES", RED_SEA_GERMANY, LocalDate.of(1919, 3, 15),
@@ -235,7 +232,7 @@ public class EntitiesTest {
 	 */
 	@Test
 	public void addAuthor() {
-		Author createdAuthor = new Author(JOYCE);
+		Author createdAuthor = new Author(JOYCE, JOYCEMARKS);
 
 		authorRepo.save(createdAuthor);
 		authorRepo.flush();
@@ -243,6 +240,8 @@ public class EntitiesTest {
 		Author persistedAuthor = authorRepo.findById(JOYCE).get();
 
 		assertTrue(persistedAuthor.equals(createdAuthor));
+		
+		System.out.println(persistedAuthor.toString());
 
 	}
 
@@ -252,7 +251,7 @@ public class EntitiesTest {
 	@Test
 	public void removeAuthor() {
 
-		Author createdAuthor = new Author(JOYCE);
+		Author createdAuthor = new Author(JOYCE, JOYCEMARKS);
 		authorRepo.save(createdAuthor);
 		authorRepo.flush();
 

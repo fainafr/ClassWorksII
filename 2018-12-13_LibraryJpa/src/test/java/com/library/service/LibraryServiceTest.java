@@ -28,6 +28,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.library.entity.Author;
 import com.library.entity.AuthorId;
 import com.library.entity.Book;
+import com.library.entity.BookLogs;
 import com.library.entity.Country;
 import com.library.entity.Publisher;
 import com.library.repo.IAuthorRepo;
@@ -99,16 +100,16 @@ public class LibraryServiceTest {
 
 
         book1 = new Book(1l,authors,"TestTitle1",publisher1Country1,
-                LocalDate.of(1900,1,31),10.);
+                LocalDate.of(1900,1,31),10., new ArrayList<BookLogs>());
 
         book2 = new Book(2l,authors,"TestTitle2",publisher1Country1,
-                LocalDate.of(1900,2,11),20.);
+                LocalDate.of(1900,2,11),20., new ArrayList<BookLogs>());
 
         book3 = new Book(3l,authors,"TestTitle3",publisher1Country1,
-                LocalDate.of(1900,3,15),30.);
+                LocalDate.of(1900,3,15),30., new ArrayList<BookLogs>());
 
         book4 = new Book(4l,authors,"TestTitle4",publisher1Country1,
-                LocalDate.of(1900,12,31),40.);
+                LocalDate.of(1900,12,31),40., new ArrayList<BookLogs>());
 
 		books = new ArrayList<>();
 		books.add(book1);
@@ -166,7 +167,8 @@ public class LibraryServiceTest {
 	public void update() {
 
 		assertTrue(model.add(book1));
-		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher1Country1, LocalDate.now(), 100.);
+		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher1Country1, LocalDate.now(),
+				100., new ArrayList<BookLogs>());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
 
@@ -177,7 +179,7 @@ public class LibraryServiceTest {
 
 		assertTrue(model.add(book1));
 		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher2Country1, LocalDate.now(),
-				book1.getPrice());
+				book1.getPrice(), new ArrayList<BookLogs>());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
 
@@ -188,7 +190,7 @@ public class LibraryServiceTest {
 
 		assertTrue(model.add(book1));
 		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher1Country2, LocalDate.now(),
-				book1.getPrice());
+				book1.getPrice(), new ArrayList<BookLogs>());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
 
@@ -199,7 +201,7 @@ public class LibraryServiceTest {
 
 		assertTrue(model.add(book1));
 		Book testBook = new Book(book1.getIsbn(), authors, book1.getTitle(), publisher2Country2, LocalDate.now(),
-				book1.getPrice());
+				book1.getPrice(), new ArrayList<BookLogs>());
 		assertNotEquals(book1, model.update(testBook));
 		assertEquals(testBook, model.getBook(testBook.getIsbn()));
 

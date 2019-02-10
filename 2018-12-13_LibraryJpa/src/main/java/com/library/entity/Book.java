@@ -2,11 +2,15 @@ package com.library.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -46,6 +50,7 @@ public class Book implements Serializable {
 		this.publisher = new Publisher(book.getPublisher());
 		this.edition = book.getEdition();
 		this.price = new Double(book.getPrice());
+		this.logs = new ArrayList<BookLogs>();
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -70,5 +75,10 @@ public class Book implements Serializable {
 	LocalDate edition;
 
 	Double price;
+	
+	@EqualsAndHashCode.Exclude
+	@ElementCollection
+	@CollectionTable
+	private List<BookLogs> logs; 
 
 }

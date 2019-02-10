@@ -4,6 +4,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.library.entity.BookLogs.UserActions;
 import com.library.repo.IAuthorRepo;
 import com.library.repo.IBookRepo;
 import com.library.repo.ICountryRepo;
@@ -47,9 +50,10 @@ public class EntitiesTest {
 	private static final Set<Author> AUTHORS = new HashSet<Author>(Arrays.asList(authorArray));
 	private static final Publisher RED_SEA_GERMANY = new Publisher(RED_SEA, new Country(GERMANY));
 	private static final Book ULYSSES = new Book(1l, AUTHORS, "ULYSSES", RED_SEA_GERMANY, LocalDate.of(1919, 3, 15),
-			30.);
+			30., new ArrayList<BookLogs>());
 	private static final Book EXILES = new Book(1l, AUTHORS, "Exiles and poetry", RED_SEA_GERMANY, LocalDate.of(1918, 1, 1),
-			30.);
+			30., new ArrayList<BookLogs>());
+	private static final BookLogs log1 = new BookLogs(LocalDate.now(), LocalTime.now(), UserActions.STATUS_CHANGE, "test_log");
 	
 	
 	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
@@ -118,6 +122,8 @@ public class EntitiesTest {
 	@Test
 	public void addBook() {
 		Book createdBook = new Book(ULYSSES);
+		createdBook.getLogs().add(log1);
+
 		
 		for (Author author : createdBook.getAuthors()) {
 			authorRepo.save(author);
@@ -132,8 +138,10 @@ public class EntitiesTest {
 
 		bookRepo.save(createdBook);
 		bookRepo.flush();
+		System.out.println(createdBook);
 
 		Book persistedBook = bookRepo.findById(createdBook.getIsbn()).get();
+		System.out.println(persistedBook);
 		assertTrue(persistedBook.equals(createdBook));
 	}
 	

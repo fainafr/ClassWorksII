@@ -4,6 +4,7 @@ package com.library.config;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Random;
@@ -13,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.library.entity.Author;
 import com.library.entity.AuthorId;
 import com.library.entity.Book;
+import com.library.entity.BookLogs;
 import com.library.entity.Country;
 import com.library.entity.Publisher;
 
@@ -69,7 +71,7 @@ public class RandomConfig {
     }
     
     public static Book randomBook() {
-        return new Book(randomIsbn(), randomAuthor(), randomTitle(), randomPublisher(), randomDate(1900), randomPrice());
+        return new Book(randomIsbn(), randomAuthor(), randomTitle(), randomPublisher(), randomDate(1900), randomPrice(), new ArrayList<BookLogs>());
     }
     
     

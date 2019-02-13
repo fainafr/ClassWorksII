@@ -28,7 +28,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "PUBLISHERS")
-public class Publisher implements Serializable {
+public class Employee implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,16 +39,16 @@ public class Publisher implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PUBLISHERCOUNTRY")
 	@JsonManagedReference
-	Country countryName;
+	Team countryName;
 
-	public Publisher(@NotNull String publisherName) {
+	public Employee(@NotNull String publisherName) {
 		super();
 		this.publisherName = publisherName;
 	}
 
-	public Publisher(Publisher publisher) {
+	public Employee(Employee publisher) {
 		this.publisherName = publisher.getPublisherName();
-		this.countryName = new Country(publisher.getCountryName());
+		this.countryName = new Team(publisher.getCountryName());
 	}
 
 }

@@ -14,8 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.library.repo.IEventRepo;
-import com.library.repo.IUserRepo;
+import com.library.repo.IEmployeeRepo;
+import com.library.repo.ITeamRepo;
 
 /**
  * Testing creation and deletion of entities to ensure relations work as
@@ -28,46 +28,44 @@ import com.library.repo.IUserRepo;
 @Transactional
 public class EntitiesTest {
 
-	private final String ALYSSA = "Alyssa";
-	private final String BITDIDDLE = "Ben";
-	private final String TESTING = "Testing"; 
-	private final Event TESTING_BEN = new Event(TESTING, new User(BITDIDDLE));
+	private static final String GERMANY = "Germany";
+	private static final String HANS = "Hans";
+	private static final Employee HANS_GERMANY = new Employee(HANS, new Team(GERMANY));
 
 	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
 	private EntityManager em;
 
 	@Autowired
-	IUserRepo userRepo;
+	ITeamRepo countryRepo;
 	@Autowired
-	IEventRepo eventRepo;
+	IEmployeeRepo publisherRepo;
 
 	@Before
 	public void clear() {
 
-		eventRepo.deleteAll();
-		userRepo.deleteAll();
+		publisherRepo.deleteAll();
+		countryRepo.deleteAll();
 
 	}
 
 	/**
-	 * Testing cascade add, without explicit saving;
+	 * Testing cascade add, without explicit saving; many side (publisher) is the
+	 * boss;
 	 */
 	@Test
-	public void addChildToBothParentsShouldFail() {
+	public void childShowsUpInParentSet() {
 
-		User createdA = new User(ALYSSA);
+		publisherRepo.save(new Employee(HANS_GERMANY));
 
-		User createdB = new User(BITDIDDLE);
+		Team createdT = new Team(GERMANY);
 
-		Event createdE = new Event(TESTING_BEN);
+		assertTrue(createdT.equals(HANS_GERMANY.getCountryName()));
 
-		eventRepo.save(createdE);
-		userRepo.save(createdA);
-		userRepo.save(createdB); 
-		
-		assertTrue(eventRepo.findAll().get(0).getUser().equals(new User(BITDIDDLE))); 
-		// TODO: Bidirectional
-		// can't allow me to place TESTING_BEN into both A and B;
+		Employee persistedE = publisherRepo.findById(HANS).get(); 
+
+		assertTrue(createdT.getPublishers().contains(persistedE)); // should be seen in the one side of the
+																	// relationship;
+		//TODO: now not works because despite the host is the publisher, we have bidirectional(?) link. 
 
 	}
 

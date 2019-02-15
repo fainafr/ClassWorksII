@@ -3,14 +3,15 @@ package com.library.entity;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,34 +24,31 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"name", "user"})
+@EqualsAndHashCode
 @ToString
 @Entity
-@Table
-public class Event implements Serializable {
+@Table(name = "PUBLISHERS")
+public class Employee implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	Integer id; 
 
-	@Column(length = 65536)
+	@Id
 	@NotNull
-	String name;
+	String publisherName;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	User user;
+    @JoinColumn(name = "PUBLISHERCOUNTRY")
+	@JsonManagedReference
+	Team countryName;
 
-	public Event(Event event) {
-		this.name = event.getName();
-		this.user = event.getUser(); // new User(event.getUser()); //np even without defensive copying; 
-	}
-	
-	public Event(@NotNull String name, User user) {
+	public Employee(@NotNull String publisherName) {
 		super();
-		this.name = name;
-		this.user = user; //new User(user);
+		this.publisherName = publisherName;
+	}
+
+	public Employee(Employee publisher) {
+		this.publisherName = publisher.getPublisherName();
+		this.countryName = new Team(publisher.getCountryName());
 	}
 
 }

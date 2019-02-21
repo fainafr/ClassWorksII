@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -105,6 +107,10 @@ public class UserEventOwnerTest {
 		EventItem savedE = userRepo.findById(ALYSSA.getId()).get().getEventItemsOwner().iterator().next();
 		assertTrue(TESTING.equals(savedE));
 
+		Set<EventItem> userAEventsOwner = ALYSSA.getEventItemsOwner();
+		
+		System.out.println("Set contains" + userAEventsOwner.contains(TESTING));
+		
 		System.out.println("Transfer " + ALYSSA.transferEvent(savedE, BEN));
 		BEN.addEvent(savedE);
 

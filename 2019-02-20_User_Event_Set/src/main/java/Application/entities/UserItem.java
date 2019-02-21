@@ -91,20 +91,17 @@ public class UserItem {
 
 	public boolean addEvent(EventItem event) {
 		event.setUserItemOwner(this);
-		if (!eventItemsOwner.contains(event)) {
-			return eventItemsOwner.add(event); // TODO: thread safety argument;
-		} else {
-			return false;
-		}
+		return eventItemsOwner.add(event); // TODO: thread safety argument;
+
 	}
 
 	public boolean transferEvent(EventItem event, UserItem newOwner) {
-		event.setUserItemOwner(newOwner); // TODO: needs null owner because method name confuses; 
+		event.setUserItemOwner(newOwner); // TODO: needs null owner because method name confuses;
 		return eventItemsOwner.remove(event);
 	}
 
 	public Set<EventItem> getEventItemsOwner() {
-		return Collections.unmodifiableSet(eventItemsOwner);
+		return eventItemsOwner;//return Collections.unmodifiableSet(eventItemsOwner);
 	}
 
 }

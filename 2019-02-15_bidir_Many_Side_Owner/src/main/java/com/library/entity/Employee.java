@@ -34,21 +34,13 @@ public class Employee implements Serializable {
 
 	@Id
 	@NotNull
-	String publisherName;
+	String employeeName;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PUBLISHERCOUNTRY")
+    @JoinColumn(name = "employees")
 	@JsonManagedReference
-	ManagedTeam countryName;
+	ManagedTeam team;
 
-	public Employee(@NotNull String publisherName) {
-		super();
-		this.publisherName = publisherName;
-	}
 
-	public Employee(Employee publisher) {
-		this.publisherName = publisher.getPublisherName();
-		this.countryName = new ManagedTeam(publisher.getCountryName());
-	}
 
 }

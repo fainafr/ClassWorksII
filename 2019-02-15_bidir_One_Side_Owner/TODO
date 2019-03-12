@@ -1,4 +1,7 @@
-https://dzone.com/articles/beginner’s-guide-jpa-and 
+TRIED TO DO:
+Saving from mappedBy without cascade; 
 
-Test there's no cascading from child;
-test o2m parent id appears in child field;
+RESULT:
+Looks like with mappedBy and without cascade the Parent will save, but the child won't
+Inconsistent state!
+otherwise just slap cascade and the child will save; 

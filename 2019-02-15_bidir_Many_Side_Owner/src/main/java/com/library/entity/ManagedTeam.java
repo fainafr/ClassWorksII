@@ -23,10 +23,10 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = "publishers")
+@EqualsAndHashCode(exclude = "employees")
 @NoArgsConstructor 
 @AllArgsConstructor
-@ToString(exclude = "publishers")
+@ToString(exclude = "employees")
 
 @Entity
 @Table(name = "COUNTRIES")
@@ -37,21 +37,11 @@ public class ManagedTeam implements Serializable{
 	@Id
 	@NotNull
 	@Column(length = 255)
-	String countryName;
+	String teamName;
 	
-	@OneToMany(mappedBy = "countryName", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "team")
 	@JsonBackReference
-	Set<Employee> publishers = new HashSet<Employee>();
-	
-	public ManagedTeam(@NotNull String countryName) {
-		super();
-		this.countryName = countryName;
-	}
-
-	public ManagedTeam(ManagedTeam country) {
-		this.countryName = country.getCountryName();
-		this.publishers = new HashSet<Employee>(country.getPublishers());
-	}
+	Set<Employee> employees = new HashSet<Employee>();
 	
 	
 	

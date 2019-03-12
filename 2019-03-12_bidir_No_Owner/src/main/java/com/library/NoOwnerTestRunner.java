@@ -49,16 +49,8 @@ public class NoOwnerTestRunner implements CommandLineRunner {
 		System.out.println("Is EventRepo empty? " + eventRepo.findAll().isEmpty());
 
 	}
-	/*
-	 * cascade tells the provider to save the children entities even if the parent
-	 * entity doesn't own them, so it effectively modifies the rule. If you had (or
-	 * have) mappedBy=child.field and did NOT have cascade then the children of the
-	 * list wouldn't be saved. Also, if you didn't have mappedBy AND didn't have
-	 * cascade then the Parent owns the relationship and if you put NEW children in
-	 * the list and then save the Parent it will *throw an exception* because the new
-	 * children ID's aren't available to be saved in the join table. Hope that
-	 * clarifies things
-	 */
+	
+
 
 //	/**
 //	 * Cascading from child;

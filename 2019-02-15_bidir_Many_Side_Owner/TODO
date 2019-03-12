@@ -1,1 +1,6 @@
-Test there's no cascading from parent(?);
+TRIED TO DO: 
+Saving from Child side; mappedBy in child side; 
+
+REPORT:
+You can't do mappedBy in child in many2One
+Cascade from child to parent works; 

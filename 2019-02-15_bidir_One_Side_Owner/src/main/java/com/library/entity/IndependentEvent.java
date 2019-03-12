@@ -24,7 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"name", "user"})
-@ToString
+@ToString(exclude = "user")
 @Entity
 @Table
 public class IndependentEvent implements Serializable {
@@ -39,18 +39,8 @@ public class IndependentEvent implements Serializable {
 	@NotNull
 	String name;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	User user;
 
-	public IndependentEvent(IndependentEvent event) {
-		this.name = event.getName();
-		this.user = event.getUser(); // new User(event.getUser()); //np even without defensive copying; 
-	}
-	
-	public IndependentEvent(@NotNull String name, User user) {
-		super();
-		this.name = name;
-		this.user = user; //new User(user);
-	}
 
 }

@@ -39,7 +39,7 @@ public class Event implements Serializable {
 	@NotNull
 	String name;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	User user;
 
 }

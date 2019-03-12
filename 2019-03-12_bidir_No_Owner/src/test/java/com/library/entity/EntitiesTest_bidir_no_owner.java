@@ -27,7 +27,7 @@ import com.library.repo.IUserRepo;
 @DataJpaTest
 @ActiveProfiles("test")
 @Transactional
-public class EntitiesTest_many_side_owner {
+public class EntitiesTest_bidir_no_owner {
 
 	private final String ANAME = "Alyssa";
 	private final String TNAME = "Testing"; 
@@ -68,12 +68,24 @@ public class EntitiesTest_many_side_owner {
 	 * Testing no cascading from parent in one-to-many unidir where child is owner;
 	 */
 	@Test
-	public void noCascading() {
+	public void noCascadingParent() {
 
 		userRepo.save(ALYSSA);
 
 		assertEquals(eventRepo.count(), 0);
 		assertEquals(userRepo.count(), 1);
+		
+		
+
+	}
+	
+	@Test
+	public void noCascadingChild() {
+
+		eventRepo.save(TESTING);
+
+		assertEquals(eventRepo.count(), 1);
+		assertEquals(userRepo.count(), 0);
 		
 		
 

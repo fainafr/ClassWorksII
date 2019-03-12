@@ -1,0 +1,11 @@
+TRIED TO DO:
+Jointable; saving from all sides without mappedBy and with different bidirectional management
+
+REPORT
+Also, if you didn't have mappedBy AND didn't have
+cascade then the Parent owns the relationship and if you put NEW children in
+the list and then save the Parent it will *throw an exception* because the new
+children ID's aren't available to be saved in the join table. 
+ ^ exception doesn't test OK. possibly a glitch
+ 
+Regardless of mapping / jointables, you ALWAYS need bidirectional management!

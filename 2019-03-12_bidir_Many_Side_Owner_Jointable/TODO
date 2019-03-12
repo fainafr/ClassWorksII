@@ -1,0 +1,6 @@
+TRIED TO DO:
+Cascade from Many side; Set of the One side is populated automatically;
+
+REPORT
+No! Bidirectional is always when you manage bidirection links. Why? 
+Also no exception when saving with transient entity. Why?

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,7 +28,7 @@ import com.library.repo.IUserRepo;
 @DataJpaTest
 @ActiveProfiles("test")
 @Transactional
-public class EntitiesTest_bidir_no_owner {
+public class EntitiesTest_bidir_one_side_owner_unoptimised {
 
 	private final String ANAME = "Alyssa";
 	private final String TNAME = "Testing"; 
@@ -41,54 +42,72 @@ public class EntitiesTest_bidir_no_owner {
 
 	@Before
 	public void build() {
-		
+
 		ALYSSA.setUserName(ANAME);
 		TESTING.setName(TNAME);
-		TESTING.setUser(ALYSSA);
 
 	}
 
-	@Test
-	public void saveRead() {
+	/**
+	 * No cascade from saving side -> exception;
+	 */
+	@Test(expected = org.springframework.dao.InvalidDataAccessApiUsageException.class)
+	public void incorrectSavingSide_incorrectBidirection() { //<- why assertion error?
 
+		TESTING.setUser(ALYSSA);
 		eventRepo.save(TESTING);
+		
+	}
+	
+	/**
+	 * 
+	 * Cascading from saving side, but the relation is managed only from the opposite side; 
+	 */
+	@Test
+	public void incorrectBidirection() {
 
-		Event savedE = eventRepo.findAll().get(0); 
-		User savedA = userRepo.findAll().get(0);
-		User savedAfromE = savedE.getUser();
-		
-		assertEquals(savedE, TESTING);
-		assertEquals(savedA, ALYSSA);
-		assertEquals(savedAfromE, ALYSSA);
-		
+		TESTING.setUser(ALYSSA);
+		userRepo.save(ALYSSA);
+
+		assertEquals(userRepo.count(), 1);
+		assertEquals(eventRepo.count(), 0);//<- not as intended;
 
 	}
 	
 	/**
-	 * Testing no cascading from parent in one-to-many unidir where child is owner;
+	 * Null instead of transient entity enables to save
 	 */
 	@Test
-	public void noCascadingParent() {
+	public void incorrectSavingSide() {
 
-		userRepo.save(ALYSSA);
-
-		assertEquals(eventRepo.count(), 0);
-		assertEquals(userRepo.count(), 1);
-		
-		
+		ALYSSA.getEvents().add(TESTING);
+		eventRepo.save(TESTING);
+	
+		assertEquals(userRepo.count(), 0); //<- not as intended;
+		assertEquals(eventRepo.count(), 1);
 
 	}
 	
+	/**
+	 * 
+	 * Cascading from saving side, and the relation is managed from the saving side; 
+	 * This is the correct saving procedure, but can we get the relation to work automatically?
+	 */
 	@Test
-	public void noCascadingChild() {
-
-		eventRepo.save(TESTING);
-
+	public void CorrectSideAndNoAutomaticBidirection() {
+		
+		ALYSSA.getEvents().add(TESTING);
+		userRepo.save(ALYSSA);
+		
+		assertEquals(userRepo.count(), 1);
 		assertEquals(eventRepo.count(), 1);
-		assertEquals(userRepo.count(), 0);
 		
-		
+		assertEquals(userRepo.findAll().get(0), ALYSSA);
+		assertEquals(eventRepo.findAll().get(0).getUser(), ALYSSA); //<- still cascading side does not mean second dir
 
 	}
+	
+
+
 
 }

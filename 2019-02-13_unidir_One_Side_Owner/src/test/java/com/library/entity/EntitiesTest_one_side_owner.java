@@ -29,10 +29,10 @@ import com.library.repo.ITeamRepo;
 @Transactional
 public class EntitiesTest_one_side_owner {
 
-	private final String TEAMA = "TEAM_A";
-	private final String HANS = "Hans";
-	private final Team teamA = new Team();
-	private final Employee emplH = new Employee(HANS);
+	private final String TNAME = "TEAM_A";
+	private final String HNAME = "Hans";
+	private final Team TEAM_A = new Team();
+	private final Employee HANS = new Employee(HNAME);
 
 	@Autowired
 	ITeamRepo teamRepo;
@@ -42,23 +42,36 @@ public class EntitiesTest_one_side_owner {
 	@Before
 	public void build() {
 
-		teamA.setName(TEAMA);
-		teamA.getEmployees().add(emplH);
+		TEAM_A.setName(TNAME);
+		TEAM_A.getEmployees().add(HANS);
 	}
 
 	@Test
 	public void saveRead() {
 
-		teamRepo.save(teamA);
+		teamRepo.save(TEAM_A);
 
-		Team savedT = teamRepo.getOne(TEAMA);
-		Employee savedE = employeeRepo.getOne(HANS);
+		Team savedT = teamRepo.getOne(TNAME);
+		Employee savedE = employeeRepo.getOne(HNAME);
 		Employee savedEfromT = savedT.getEmployees().iterator().next();
 
-		assertEquals(savedT, teamA);
-		assertEquals(savedE, emplH);
-		assertEquals(savedEfromT, emplH);
+		assertEquals(savedT, TEAM_A);
+		assertEquals(savedE, HANS);
+		assertEquals(savedEfromT, HANS);
 
+	}
+	
+	/**
+	 * Testing no cascading from child in one-to-many unidir where parent is owner;
+	 */
+	@Test
+	public void noCascading() {
+
+		employeeRepo.save(HANS);
+		
+		assertEquals(teamRepo.count(), 0);
+		assertEquals(employeeRepo.count(), 1);
+		
 	}
 
 }

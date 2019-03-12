@@ -48,9 +48,6 @@ public class EntitiesTest_many_side_owner {
 
 	}
 
-	/**
-	 * Testing cascade add, without explicit saving;
-	 */
 	@Test
 	public void saveRead() {
 
@@ -63,6 +60,21 @@ public class EntitiesTest_many_side_owner {
 		assertEquals(savedE, TESTING);
 		assertEquals(savedA, ALYSSA);
 		assertEquals(savedAfromE, ALYSSA);
+		
+
+	}
+	
+	/**
+	 * Testing no cascading from parent in one-to-many unidir where child is owner;
+	 */
+	@Test
+	public void noCascading() {
+
+		userRepo.save(ALYSSA);
+
+		assertEquals(eventRepo.count(), 0);
+		assertEquals(userRepo.count(), 1);
+		
 		
 
 	}

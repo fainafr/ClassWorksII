@@ -1,0 +1,6 @@
+TRIED TO DO:
+Saving from mappedBy with cascade; checking parent appears in child FK field;
+
+
+RESULT:
+Looks like parent needs to be set explicitely(?)

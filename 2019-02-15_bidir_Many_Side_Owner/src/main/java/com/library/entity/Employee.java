@@ -39,7 +39,7 @@ public class Employee implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PUBLISHERCOUNTRY")
 	@JsonManagedReference
-	Team countryName;
+	ManagedTeam countryName;
 
 	public Employee(@NotNull String publisherName) {
 		super();
@@ -48,7 +48,7 @@ public class Employee implements Serializable {
 
 	public Employee(Employee publisher) {
 		this.publisherName = publisher.getPublisherName();
-		this.countryName = new Team(publisher.getCountryName());
+		this.countryName = new ManagedTeam(publisher.getCountryName());
 	}
 
 }

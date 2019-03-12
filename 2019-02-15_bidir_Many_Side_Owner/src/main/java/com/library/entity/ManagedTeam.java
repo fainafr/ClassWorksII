@@ -30,7 +30,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "COUNTRIES")
-public class Team implements Serializable{
+public class ManagedTeam implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -43,12 +43,12 @@ public class Team implements Serializable{
 	@JsonBackReference
 	Set<Employee> publishers = new HashSet<Employee>();
 	
-	public Team(@NotNull String countryName) {
+	public ManagedTeam(@NotNull String countryName) {
 		super();
 		this.countryName = countryName;
 	}
 
-	public Team(Team country) {
+	public ManagedTeam(ManagedTeam country) {
 		this.countryName = country.getCountryName();
 		this.publishers = new HashSet<Employee>(country.getPublishers());
 	}

@@ -27,7 +27,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table
-public class Event implements Serializable {
+public class IndependentEvent implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -42,12 +42,12 @@ public class Event implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	User user;
 
-	public Event(Event event) {
+	public IndependentEvent(IndependentEvent event) {
 		this.name = event.getName();
 		this.user = event.getUser(); // new User(event.getUser()); //np even without defensive copying; 
 	}
 	
-	public Event(@NotNull String name, User user) {
+	public IndependentEvent(@NotNull String name, User user) {
 		super();
 		this.name = name;
 		this.user = user; //new User(user);

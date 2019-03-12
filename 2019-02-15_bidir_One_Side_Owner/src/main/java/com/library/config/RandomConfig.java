@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.library.entity.User;
-import com.library.entity.Event;
+import com.library.entity.IndependentEvent;
 
 public class RandomConfig {
     static Random random = new Random();
@@ -42,10 +42,10 @@ public class RandomConfig {
 
 
 
-    public static Event randomPublisher() {
+    public static IndependentEvent randomPublisher() {
         String name = RandomConfig.PUBLISHER_NAMES[random.nextInt(RandomConfig.PUBLISHER_NAMES.length)];
         String country = locales[random.nextInt(locales.length)].getDisplayCountry();
-        return new Event(name, new User(country));
+        return new IndependentEvent(name, new User(country));
     }
 
     public static String randomTitle() {

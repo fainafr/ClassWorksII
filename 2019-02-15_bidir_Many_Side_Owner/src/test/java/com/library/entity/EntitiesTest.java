@@ -30,7 +30,7 @@ public class EntitiesTest {
 
 	private static final String GERMANY = "Germany";
 	private static final String HANS = "Hans";
-	private static final Employee HANS_GERMANY = new Employee(HANS, new Team(GERMANY));
+	private static final Employee HANS_GERMANY = new Employee(HANS, new ManagedTeam(GERMANY));
 
 	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
 	private EntityManager em;
@@ -57,7 +57,7 @@ public class EntitiesTest {
 
 		publisherRepo.save(new Employee(HANS_GERMANY));
 
-		Team createdT = new Team(GERMANY);
+		ManagedTeam createdT = new ManagedTeam(GERMANY);
 
 		assertTrue(createdT.equals(HANS_GERMANY.getCountryName()));
 

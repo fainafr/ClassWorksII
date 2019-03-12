@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.library.entity.Event;
+import com.library.entity.IndependentEvent;
 
-public interface IEventRepo extends JpaRepository<Event, String> {
+public interface IEventRepo extends JpaRepository<IndependentEvent, String> {
 	
 }

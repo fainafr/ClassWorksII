@@ -31,7 +31,7 @@ public class EntitiesTest {
 	private final String ALYSSA = "Alyssa";
 	private final String BITDIDDLE = "Ben";
 	private final String TESTING = "Testing"; 
-	private final Event TESTING_BEN = new Event(TESTING, new User(BITDIDDLE));
+	private final IndependentEvent TESTING_BEN = new IndependentEvent(TESTING, new User(BITDIDDLE));
 
 	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
 	private EntityManager em;
@@ -59,7 +59,7 @@ public class EntitiesTest {
 
 		User createdB = new User(BITDIDDLE);
 
-		Event createdE = new Event(TESTING_BEN);
+		IndependentEvent createdE = new IndependentEvent(TESTING_BEN);
 
 		eventRepo.save(createdE);
 		userRepo.save(createdA);

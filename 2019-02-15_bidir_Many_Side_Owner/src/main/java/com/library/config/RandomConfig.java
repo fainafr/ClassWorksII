@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.library.entity.Team;
+import com.library.entity.ManagedTeam;
 import com.library.entity.Employee;
 
 public class RandomConfig {
@@ -45,7 +45,7 @@ public class RandomConfig {
     public static Employee randomPublisher() {
         String name = RandomConfig.PUBLISHER_NAMES[random.nextInt(RandomConfig.PUBLISHER_NAMES.length)];
         String country = locales[random.nextInt(locales.length)].getDisplayCountry();
-        return new Employee(name, new Team(country));
+        return new Employee(name, new ManagedTeam(country));
     }
 
     public static String randomTitle() {

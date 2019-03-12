@@ -26,7 +26,7 @@ import com.library.repo.IUserRepo;
 @DataJpaTest
 @ActiveProfiles("test")
 @Transactional
-public class EntitiesTest {
+public class EntitiesTest_many_side_owner {
 
 	private final String ALYSSA = "Alyssa";
 	private final String BITDIDDLE = "Ben";

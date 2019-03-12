@@ -27,28 +27,14 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "PUBLISHERS")
+@Table(name = "EMPLOYEES")
 public class Employee implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@NotNull
-	String publisherName;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PUBLISHERCOUNTRY")
-	@JsonManagedReference
-	Team countryName;
+	String name;
 
-	public Employee(@NotNull String publisherName) {
-		super();
-		this.publisherName = publisherName;
-	}
-
-	public Employee(Employee publisher) {
-		this.publisherName = publisher.getPublisherName();
-		this.countryName = new Team(publisher.getCountryName());
-	}
 
 }

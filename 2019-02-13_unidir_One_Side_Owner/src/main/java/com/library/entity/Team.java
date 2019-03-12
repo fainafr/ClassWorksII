@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -23,13 +24,12 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = "publishers")
+@EqualsAndHashCode(exclude = "employees")
 @NoArgsConstructor 
 @AllArgsConstructor
-@ToString(exclude = "publishers")
-
+@ToString(exclude = "employees")
 @Entity
-@Table(name = "COUNTRIES")
+@Table(name = "TEAMS")
 public class Team implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -37,22 +37,11 @@ public class Team implements Serializable{
 	@Id
 	@NotNull
 	@Column(length = 255)
-	String countryName;
+	String name;
 	
-	@OneToMany(mappedBy = "countryName", cascade=CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_team_name")
 	@JsonBackReference
-	Set<Employee> publishers = new HashSet<Employee>();
-	
-	public Team(@NotNull String countryName) {
-		super();
-		this.countryName = countryName;
-	}
-
-	public Team(Team country) {
-		this.countryName = country.getCountryName();
-		this.publishers = new HashSet<Employee>(country.getPublishers());
-	}
-	
-	
+	Set<Employee> employees = new HashSet<Employee>();
 	
 }

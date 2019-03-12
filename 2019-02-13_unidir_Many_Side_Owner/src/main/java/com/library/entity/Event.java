@@ -42,15 +42,4 @@ public class Event implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	User user;
 
-	public Event(Event event) {
-		this.name = event.getName();
-		this.user = event.getUser(); // new User(event.getUser()); //np even without defensive copying; 
-	}
-	
-	public Event(@NotNull String name, User user) {
-		super();
-		this.name = name;
-		this.user = user; //new User(user);
-	}
-
 }

@@ -1,5 +1,6 @@
 package com.library.entity;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
@@ -28,13 +29,10 @@ import com.library.repo.IUserRepo;
 @Transactional
 public class EntitiesTest_many_side_owner {
 
-	private final String ALYSSA = "Alyssa";
-	private final String BITDIDDLE = "Ben";
-	private final String TESTING = "Testing"; 
-	private final Event TESTING_BEN = new Event(TESTING, new User(BITDIDDLE));
-
-	@PersistenceContext // https://www.javabullets.com/access-entitymanager-spring-data-jpa/
-	private EntityManager em;
+	private final String ANAME = "Alyssa";
+	private final String TNAME = "Testing"; 
+	private final User ALYSSA = new User();
+	private final Event TESTING = new Event();
 
 	@Autowired
 	IUserRepo userRepo;
@@ -42,10 +40,11 @@ public class EntitiesTest_many_side_owner {
 	IEventRepo eventRepo;
 
 	@Before
-	public void clear() {
-
-		eventRepo.deleteAll();
-		userRepo.deleteAll();
+	public void build() {
+		
+		ALYSSA.setUserName(ANAME);
+		TESTING.setName(TNAME);
+		TESTING.setUser(ALYSSA);
 
 	}
 
@@ -53,21 +52,18 @@ public class EntitiesTest_many_side_owner {
 	 * Testing cascade add, without explicit saving;
 	 */
 	@Test
-	public void addChildToBothParentsShouldFail() {
+	public void saveRead() {
 
-		User createdA = new User(ALYSSA);
+		eventRepo.save(TESTING);
 
-		User createdB = new User(BITDIDDLE);
-
-		Event createdE = new Event(TESTING_BEN);
-
-		eventRepo.save(createdE);
-		userRepo.save(createdA);
-		userRepo.save(createdB); 
+		Event savedE = eventRepo.findAll().get(0); 
+		User savedA = userRepo.findAll().get(0);
+		User savedAfromE = savedE.getUser();
 		
-		assertTrue(eventRepo.findAll().get(0).getUser().equals(new User(BITDIDDLE))); 
-		// TODO: Bidirectional
-		// can't allow me to place TESTING_BEN into both A and B;
+		assertEquals(savedE, TESTING);
+		assertEquals(savedA, ALYSSA);
+		assertEquals(savedAfromE, ALYSSA);
+		
 
 	}
 

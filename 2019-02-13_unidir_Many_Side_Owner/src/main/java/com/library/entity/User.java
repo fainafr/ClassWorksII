@@ -37,14 +37,5 @@ public class User implements Serializable {
 	@NotNull
 	String userName;
 
-	public User(@NotNull String userName) {
-		super();
-		this.userName = userName;
-	}
-	
-	public User(User user) {
-		super();
-		this.userName = user.getUserName();
-	}
 
 }

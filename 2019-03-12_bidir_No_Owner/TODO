@@ -1,0 +1,4 @@
+Check how jointable works in o2m;
+Check cascade saving child / parent;
+
+https://stackoverflow.com/questions/2749689/what-is-the-owning-side-in-an-orm-mapping/21068644#21068644

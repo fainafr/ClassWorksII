@@ -1,2 +1,4 @@
 To o2m jointable in "one" side (parent)
 Check there's no cascading from child; 
+
+https://thoughts-on-java.org/best-practices-many-one-one-many-associations-mappings/
